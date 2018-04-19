@@ -1,0 +1,15 @@
+{
+  "name": "pavics-e2e-ui-tests",
+  "version": "1.0.0",
+  "description": "Tests for the PAVICS interfaces with Cypress.IO",
+  "main": "index.js",
+  "scripts": {
+    "cypress": "cypress open",
+    "test": "cypress run"
+  },
+  "author": "Renaud Hébert-Legault",
+  "license": "MIT",
+  "dependencies": {
+    "cypress": "^2.1.0"
+  }
+}
