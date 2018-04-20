@@ -1,5 +1,9 @@
 {
   "baseUrl": "https://pluvier.crim.ca",
   "viewportWidth": 1800,
-  "viewportHeight": 1200
+  "viewportHeight": 1200,
+  "env": {
+    "MAGPIE_USERNAME": "cypress",
+    "MAGPIE_PASSWORD": "cypress"
+  }
 }
