@@ -2,7 +2,7 @@ describe('Test project management section', () => {
     /*beforeEach(() => {
       cy.visit('/')
     })*/
-    let projectName = 'Project Cypress Test';
+    let projectName = 'Project Cypress Test XYZ';
     let projectDescription ='Cypress created this project description';
     let suffix = 'ABC';
 

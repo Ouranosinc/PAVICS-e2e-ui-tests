@@ -52,7 +52,7 @@ Cypress.Commands.add('createSelectTestProject', () => {
   cy.get('#cy-project-management').click()
   cy.get('#cy-create-project-tab').click()
   // Create
-  cy.get('input#cy-project-name-tf').clear().type('TEST') 
+  cy.get('input#cy-project-name-tf').clear().type('Project Cypress Test XYZ') 
   cy.get('#cy-create-project-btn').click()
   cy.get('.notification-container .notification-message h4').should('contain', 'Success')
   cy.get('.notification-container .notification-success').click()
@@ -100,4 +100,27 @@ Cypress.Commands.add('ensureSectionClose', (sectionId, title) => {
 
   // Content shouldn't be visible anymore
   cy.get('#cy-sectional-content').should('not.be.visible')
+})
+
+// Search datasets section should be loaded as well as some facets
+Cypress.Commands.add('selectFacet', (key, value) => {
+  cy.get(`#cy-search-facet-${key} button`).click()
+  cy.get(`#cy-search-facet-${key}-${value} input`).check()
+  cy.get(`#cy-search-facet-${key} button`).click() // TODO a backdrop click outside should also work eventually
+})
+
+// Search datasets section should be loaded and some facets should be selected
+Cypress.Commands.add('resetFacets', (key, value) => {
+  cy.get('#cy-reset-criterias-btn').click()
+  cy.get('#cy-search-no-results-sh').should('contain', 'No results found.')
+  cy.get('#cy-reset-criterias-btn').should('have.attr', 'disabled')
+  cy.get('#cy-save-criterias-btn').should('have.attr', 'disabled')
+})
+
+// Search datasets section should be loaded and some facets should be selected
+Cypress.Commands.add('saveSearchCriterias', (name) => {
+  cy.get('#cy-criterias-name-tf').clear().type(name)
+  cy.get('#cy-save-criterias-btn').click()
+  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
+  cy.get('.notification-container .notification-success').click()
 })
