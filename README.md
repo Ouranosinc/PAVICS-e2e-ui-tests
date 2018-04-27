@@ -42,7 +42,13 @@ cy.log() # Will log you in the platform
 cy.logout() # Will log you out
 ```
 
-## Docker
 
+## Environment variables
+CYPRESS_baseUrl=https://outarde.crim.ca
+MAGPIE_USERNAME": "xyz"
+MAGPIE_PASSWORD": "xyz"
+
+
+## Docker
 TODO
 
