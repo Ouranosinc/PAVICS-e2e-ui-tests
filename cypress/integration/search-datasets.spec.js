@@ -116,7 +116,7 @@ describe('Test search datasets section', () => {
     })
 
     it('Test closing tasks', () => {
-        cy.removeTestProject()
+        cy.removeCurrentProject()
         cy.logout()
     })
 
