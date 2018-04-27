@@ -2,6 +2,10 @@
   "name": "pavics-e2e-ui-tests",
   "version": "1.0.0",
   "description": "Tests for the PAVICS interfaces with Cypress.IO",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ouranosinc/PAVICS-e2e-ui-tests.git"
+  },
   "main": "index.js",
   "scripts": {
     "cypress": "cypress open",

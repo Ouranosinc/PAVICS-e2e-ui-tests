@@ -1,7 +1,8 @@
 import * as constants from './../constants';
 let countResults = 0;
+let searchCriteriasCount = 0;
 
-describe('Test project search criterias actions', () => {
+describe('Test project search criterias actions (Remove/Relaunch/Restore)', () => {
     it('Test initialisation', () => {
         cy.init()
         cy.login()
@@ -29,10 +30,15 @@ describe('Test project search criterias actions', () => {
         cy.resetFacets()
     })
 
-    it('Select current project newly added search criterias and trigger action "Restore results"', () => {
+    it('There should be one added search criterias in the current project', () => {
         cy.get('#cy-project-management').click()
-        cy.get('.cy-project-search-criterias-item #cy-actions-btn').first().click()
-        cy.get('div[role=menu]').children().should('to.have.lengthOf', 4) // 4 actions
+        cy.get('#cy-project-search-criterias #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "1") 
+    })
+
+    it('Select current project newly added search criterias and trigger action "Restore results"', () => {
+        cy.get('.cy-project-search-criterias-item .cy-actions-btn').first().click()
+        // Should we really valid there will be 3 action buttons
+        cy.get('div[role=menu]').children().should('to.have.lengthOf', 3) // 3 actions
         cy.get('div[role=menu] #cy-restore-item').click()
 
         cy.get('.notification-container .notification-message h4').should('contain', 'Warning')
@@ -54,8 +60,7 @@ describe('Test project search criterias actions', () => {
 
     it('Select current project newly added search criterias and trigger action "Relaunch search"', () => {
         cy.get('#cy-project-management').click()
-        cy.get('.cy-project-search-criterias-item #cy-actions-btn').first().click()
-        cy.get('div[role=menu]').children().should('to.have.lengthOf', 4) // 4 actions
+        cy.get('.cy-project-search-criterias-item .cy-actions-btn').first().click()
         cy.get('div[role=menu] #cy-relaunch-item').click()
 
         // Should be redirected to Search Datasets setion
@@ -68,13 +73,24 @@ describe('Test project search criterias actions', () => {
         cy.get('#cy-search-results #cy-search-results-count')
         cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('eq', countResults) 
     })
-    
-    it('Close Search Datasets panel', () => {
-        cy.ensureSectionClose('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
+
+    it('Remove first search criterias in the current project', () => {
+        cy.get('#cy-project-management').click()
+
+        cy.get('.cy-project-search-criterias-item .cy-actions-btn').first().click()
+        cy.get('div[role=menu] #cy-remove-item').click()
+        
+        cy.get('.notification-container .notification-message h4').should('contain', 'Success')
+        cy.get('.notification-container .notification-success').click()
+    })
+
+    it('There should be no more search criterias in the current project', () => {
+        cy.get('#cy-project-search-criterias #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "0") 
     })
 
     it('Test closing tasks', () => {
-        cy.removeTestProject()
+        cy.ensureSectionClose('cy-project-management', constants.PROJECT_MANAGEMENT_TITLE)
+        cy.removeCurrentProject()
         cy.logout()
     })
 
