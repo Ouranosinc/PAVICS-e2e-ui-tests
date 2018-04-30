@@ -21,7 +21,6 @@ $ npm run cypress               # Launch the Cypress application
 ```
 
 ## How to write a new test
-
 - Every tests suite (integration/*.spec.js file) should be able to run independantly
 - We do not intercept API route calls to inject our mock-data (with cy.route(), cy.stub()). In fact, we want those tests to be 'End-to-end integrations tests' that valid the PAVICS infrastructure is working as intendedfor a given platform URL.
 - Reuse maximum of pre-defined utility commands (support/commands.js)
@@ -33,7 +32,6 @@ $ npm run cypress               # Launch the Cypress application
 - Use prefixed 'data-cy-' attributes when you need dynamic data to be the selected element
 
 #List of reusable commands (support/commands.js):
-
 ```javascript
 cy.init() # Call it before every test, will cy.visit() main page then do some basic stuff like removing alerts and minimizing panels
 cy.createTestProject() # Should be called before every test, everything cypress does will be included in this project
@@ -42,13 +40,13 @@ cy.log() # Will log you in the platform
 cy.logout() # Will log you out
 ```
 
-
 ## Environment variables
 CYPRESS_baseUrl=https://outarde.crim.ca
-MAGPIE_USERNAME": "xyz"
-MAGPIE_PASSWORD": "xyz"
-
+MAGPIE_USERNAME=xyz
+MAGPIE_PASSWORD=xyz
 
 ## Docker
-TODO
+docker build -t pavics/pavics-e2e-ui-tests . # Build
+docker pull pavics/pavics-e2e-ui-tests  # Or simply pull from DockerHub
+docker run -it pavics/pavics-e2e-ui-tests # Run (don't forget to define environment variables if needed)
 
