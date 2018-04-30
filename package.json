@@ -9,7 +9,8 @@
   "main": "index.js",
   "scripts": {
     "cypress": "cypress open",
-    "test": "cypress run"
+    "test": "cypress run --record",
+    "test:project-basic-crud-actions": "cypress run --spec cypress/integration/project-basic-crud-actions.spec.js --record"
   },
   "author": "Renaud Hébert-Legault",
   "license": "MIT",
