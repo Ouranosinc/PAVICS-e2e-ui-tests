@@ -9,6 +9,12 @@ This project focuses on testing the PAVICS-frontend interfaces in the context of
 * node `^8.0.0` but developped with Node v8.9.4
 * npm `^5.0.0` but developped with Node v5.6.0
 
+cypress requires libgconf to run. On ubuntu:
+
+```
+sudo apt-get install libgconf-2-4
+```
+
 ## Getting Started
 
 Steps to get the project up and running:
