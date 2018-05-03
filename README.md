@@ -47,7 +47,8 @@ cy.logout() # Will log you out
 ```
 
 ## Environment variables
-CYPRESS_baseUrl=https://outarde.crim.ca
+CYPRESS_baseUrl=https://outarde.crim.ca # Or any instance of PAVICS Platform that is up and running
+CYPRESS_RECORD_KEY=cypress_record_key # Private at this point
 MAGPIE_USERNAME=xyz
 MAGPIE_PASSWORD=xyz
 
