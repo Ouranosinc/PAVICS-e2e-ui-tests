@@ -12,6 +12,7 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
     it('Create search criteria(s) and count results', () => {
         cy.get('#cy-search-datasets').click()
         cy.selectFacet('project', 'ObsGrid')
+        cy.wait(2000)
         cy.get('#cy-search-results #cy-search-results-count')
 
         // Note total results for future validation

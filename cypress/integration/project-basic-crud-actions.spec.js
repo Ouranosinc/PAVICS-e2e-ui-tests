@@ -35,8 +35,8 @@ describe('Test project basic CRUD actions', () => {
     })
 
     it('Edit project properties', () => {
-        cy.get('input#cy-project-name-tf').clear().type(constants.PROJECT_NAME + CURRENT_DATE_TIME + constants.PROJECT_NAME_SUFFIX) 
-        cy.get('textarea#cy-project-description-tf').clear().type(constants.PROJECT_DESCRIPTION + constants.PROJECT_NAME_SUFFIX) 
+        cy.get('input#cy-project-name-tf').clear().type(constants.PROJECT_NAME + CURRENT_DATE_TIME + constants.ABC_SUFFIX) 
+        cy.get('textarea#cy-project-description-tf').clear().type(constants.PROJECT_DESCRIPTION + constants.ABC_SUFFIX) 
         cy.get('#cy-save-project-btn').click()
         cy.get('.notification-container .notification-message h4').should('contain', 'Success')
         cy.get('.notification-container .notification-success').click()

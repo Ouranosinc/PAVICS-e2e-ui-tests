@@ -1,68 +1,58 @@
-import * as constants from './../constants';
+import {SEARCH_DATASETS_TITLE, PROJECT_MANAGEMENT_TITLE} from './../constants';
 
 // Attempt to do cypress attended pure-test pattern (Needed for the Download feature)
 
 describe('Test project datasets actions (Visualize/Remove/Download)', () => {
-    beforeEach(() => {
-        // Test initialisation
-        cy.init(true) // with an hook for window.open download event
+    it('Test initialisation', () => {
+        cy.init()
         cy.login()
         cy.createSelectTestProject() // @testProjectId is the current test project id
-        cy.ensureSectionOpen('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
-
-        // Launch search with project:Ouranos and variable:PCP facets that should return a minimum of one result
-        cy.selectFacet('project', 'Ouranos')
-        cy.selectFacet('variable', 'PCP')
-        cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
-        cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
-
-        // Select first dataset and add it to current project
-        cy.get('.cy-dataset-result-item input[type=checkbox]').first().check()
-        cy.get('#cy-add-datasets-btn').click()
-        cy.wait(1000)
-        cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-        cy.get('.notification-container .notification-success').click()
-
-        // Resetting facets should remove facets and results
-        cy.resetFacets()
-
-        // Launch search with project:CMIP5 and frequency:day facets that should return a minimum of two results
-        cy.selectFacet('project', 'CMIP5')
-        cy.selectFacet('frequency', 'day')
-        cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
-        cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
-
-        // Select first dataset and add it to current project
-        cy.get('.cy-dataset-result-item input[type=checkbox]').first().check()
-        cy.get('#cy-add-datasets-btn').click()
-        cy.wait(1000)
-        cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-        cy.get('.notification-container .notification-success').click()
-
-        // Resetting facets should remove facets and results
-        cy.resetFacets()
-        cy.ensureSectionClose('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
-        cy.ensureSectionOpen('cy-project-management', constants.PROJECT_MANAGEMENT_TITLE)
-
-        // There should be two added datasets in the current project', () => {
-        cy.get('#cy-project-datasets #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "2") 
+        cy.ensureSectionOpen('cy-search-datasets', SEARCH_DATASETS_TITLE)
     })
 
-    afterEach(() => {
-        // Test closing tasks
-        cy.ensureSectionClose('cy-project-management', constants.PROJECT_MANAGEMENT_TITLE)
-        cy.removeCurrentProject()
-        cy.logout()
+    it('Launch search with project:Ouranos and variable:PCP facets that should return a minimum of one result', () => {
+        cy.selectFacet('project', 'Ouranos')
+        cy.selectFacet('variable', 'PCP')
+
+        cy.wait(2000)
+        cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
+        cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
+    })
+
+    it('Select first dataset and add it to current project', () => {
+        cy.addFirstDatasetToProject()
+    })
+
+    it('Resetting facets should remove facets and results', () => {
+        cy.resetFacets()
+    })
+
+    it('Launch search with project:CMIP5 and frequency:day facets that should return a minimum of two results', () => {
+        cy.selectFacet('project', 'CMIP5')
+        cy.selectFacet('frequency', 'day')
+
+        cy.wait(2000)
+        cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
+        cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
+    })
+
+    it('Select first dataset and add it to current project', () => {
+        cy.addFirstDatasetToProject()
+    })
+
+    it('Resetting facets should remove facets ans results', () => {
+        cy.resetFacets()
+    })
+
+    it('There should be two added datasets in the current project', () => {
+        cy.get('#cy-project-datasets #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "2") 
     })
 
     /*
     * We assume selected CMIP5/day dataset should contains a single NetCDF file
     */
     it('Select current project last dataset and trigger action "Visualize"', () => {
-        cy.get('.cy-project-dataset-item .cy-actions-btn').last().click()
-        cy.get('div[role=menu]').children().should('to.have.lengthOf', 3) // 3 actions attended
-        cy.get('div[role=menu] #cy-visualize-item').click() // Trigger action
-        cy.get('#cy-sectional-content h1').click() // Close actions menu
+        cy.visualizeFirstSingleFileDataset()
         
         cy.wait(5000)
         cy.get('#cy-big-color-palette').should('be.visible')
@@ -154,68 +144,11 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
         // TODO: Count there's no more
     })
 
-    // NOW IS BEFOREEACH
-
-    /*it('Test initialisation', () => {
-        cy.init()
-        cy.login()
-        cy.createSelectTestProject() // @testProjectId is the current test project id
-        cy.ensureSectionOpen('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
-    })
-
-    it('Launch search with project:Ouranos and variable:PCP facets that should return a minimum of one result', () => {
-        cy.selectFacet('project', 'Ouranos')
-        cy.selectFacet('variable', 'PCP')
-
-        cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
-        cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
-    })
-
-    it('Select first dataset and add it to current project', () => {
-        cy.get('.cy-dataset-result-item input[type=checkbox]').first().check()
-        cy.get('#cy-add-datasets-btn').click()
-
-        cy.wait(1000)
-        cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-        cy.get('.notification-container .notification-success').click()
-    })
-
-    it('Resetting facets should remove facets and results', () => {
-        cy.resetFacets()
-    })
-
-    it('Launch search with project:CMIP5 and frequency:day facets that should return a minimum of two results', () => {
-        cy.selectFacet('project', 'CMIP5')
-        cy.selectFacet('frequency', 'day')
-
-        cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
-        cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
-    })
-
-    it('Select first dataset and add it to current project', () => {
-        cy.get('.cy-dataset-result-item input[type=checkbox]').first().check()
-        cy.get('#cy-add-datasets-btn').click()
-
-        cy.wait(1000)
-        cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-        cy.get('.notification-container .notification-success').click()
-    })
-
-    it('Resetting facets should remove facets ans results', () => {
-        cy.resetFacets()
-    })
-
-    it('There should be two added datasets in the current project', () => {
-        cy.get('#cy-project-datasets #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "2") 
-    })*/
-
-    // NOW IS AFTEREACH
-
-    /*it('Test closing tasks', () => {
-        cy.ensureSectionClose('cy-project-management', constants.PROJECT_MANAGEMENT_TITLE)
+    it('Test closing tasks', () => {
+        cy.ensureSectionClose('cy-project-management', PROJECT_MANAGEMENT_TITLE)
         cy.removeCurrentProject()
         cy.logout()
-    })*/
+    })
 
 })
   
