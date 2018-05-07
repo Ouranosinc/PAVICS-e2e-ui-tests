@@ -89,3 +89,13 @@ Cypress.Commands.add('removeCypressTestProjects', () => {
     cy.get('div[role=menu] #cy-visualize-item').click() // Trigger action
     cy.get('#cy-sectional-content h1').click() // Close actions menu
 })
+
+
+// Add CMIP5 dataset and visualize it
+Cypress.Commands.add('addCMIP5DatasetThenVisualize', () => {
+  cy.get('#cy-search-datasets').click()
+  cy.selectCMIP5PRMonFacets()
+  cy.addFirstDatasetToProject()
+  cy.get('#cy-project-management').click()
+  cy.visualizeFirstSingleFileDataset()
+})

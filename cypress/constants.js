@@ -24,18 +24,20 @@ export const WORKFLOW_INPUT_DOWNLOAD_URL = "http://pluvier.crim.ca:8083/thredds/
 export const WORKFLOW_INPUT_RESOURCE = "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/dodsC/birdhouse/CMIP5/CCCMA/CanESM2/rcp85/day/atmos/r1i1p1/pr/pr_day_CanESM2_rcp85_r1i1p1_20060101-21001231.nc";
 export const WORKFLOW_INPUT_TYPENAME = "ADMINBOUNDARIES:canada_admin_boundaries";
 export const WORKFLOW_INPUT_FEATUREIDS =  "canada_admin_boundaries.5";
+export const WORKFLOW_INPUT_TYPENAME_ALT = "usa:states";
+export const WORKFLOW_INPUT_FEATUREIDS_ALT =  "states.10";
 export const WORKFLOW_INPUT_MOSAIC = "True";
 
 // Basic workflow
 export const BASIC_WORKFLOW_NAME = "BASIC_WORKFLOW_NAME";
-let basicWorkflow = {
+export const BASIC_WORKFLOW_JSON = {
 	"name": BASIC_WORKFLOW_NAME,
 	"tasks": [
 		{
 			"name": "Downloading",
 			"identifier": "thredds_download",
 			"inputs": {
-				"url": ""
+				"url": WORKFLOW_INPUT_DOWNLOAD_URL
 			},
 			"progress_range": [
 				0,
@@ -63,9 +65,9 @@ let basicWorkflow = {
 					"name": "Subsetting",
 					"identifier": "subset_WFS",
 					"inputs": {
-						"typename": "",
-						"featureids": "",
-						"mosaic": ""
+						"typename": WORKFLOW_INPUT_TYPENAME,
+						"featureids": WORKFLOW_INPUT_FEATUREIDS,
+						"mosaic": WORKFLOW_INPUT_MOSAIC
 					},
 					"linked_inputs": {
 						"resource": {
@@ -98,7 +100,7 @@ let basicWorkflow = {
 		}
 	]
 };
-let invalidWorkflow = {
+export const INVALID_WORKFLOW_JSON = {
 	"name": "INVALID_WORKFLOW",
 	"tasks": [
 		{
@@ -116,7 +118,21 @@ let invalidWorkflow = {
 	],
 	"parallel_groups": []
 };
+export const MISSING_PROVIDER_WORKFLOW_JSON = {
+	"name": "MISSING_PROVIDER_WORKFLOW",
+	"tasks": [
+		{
+			"name": "Test",
+			"identifier": "test",
+			"inputs": {
+				"test": "cypress"
+			},
+			"provider": "xyz"
+		}
+	]
+};
 
 // Escape openning brackets since cypress use them as 'sequences' keywords
-export const BASIC_WORKFLOW = JSON.stringify(basicWorkflow).replace(/{/g, '{{}');
-export const INVALID_WORKFLOW = JSON.stringify(invalidWorkflow).replace(/{/g, '{{}');
+export const BASIC_WORKFLOW = JSON.stringify(BASIC_WORKFLOW_JSON).replace(/{/g, '{{}');
+export const INVALID_WORKFLOW = JSON.stringify(INVALID_WORKFLOW_JSON).replace(/{/g, '{{}');
+export const MISSING_PROVIDER_WORKFLOW = JSON.stringify(MISSING_PROVIDER_WORKFLOW_JSON).replace(/{/g, '{{}');

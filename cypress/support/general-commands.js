@@ -9,14 +9,11 @@ Cypress.Commands.add('init', (onOpenHook = false) => {
       }
   }
   cy.log("Initialisation...")
-  // cy.clearCookies()
   cy.clearCookie('auth_tkt')
-
+  cy.clearLocalStorage()
   cy.visit('/', (onOpenHook)? hook: null)
-
   // Remove all alerts (selected project(info), logged(success))
   cy.get('.notification-container .notification').click({multiple:true})
-
   // Minimize Visualize panels
   cy.get('button.cy-minimize-btn').click({multiple: true})
 })

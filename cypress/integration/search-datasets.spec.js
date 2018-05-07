@@ -1,4 +1,5 @@
 import * as constants from './../constants';
+let to = require('./../constants');
 
 describe('Test search datasets section', () => {
     it('Test initialisation', () => {
@@ -37,7 +38,7 @@ describe('Test search datasets section', () => {
         cy.get('#cy-search-facet-variable button')
     })
 
-    it('Select project:CMIP5 and variable:pr facets', () => {
+    it('Select project:CMIP5, variable:pr facets', () => {
         cy.selectFacet('project', 'CMIP5')
         cy.selectFacet('variable', 'pr')
     })
