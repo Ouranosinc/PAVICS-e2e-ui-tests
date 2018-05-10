@@ -14,7 +14,12 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './general-commands'
+import './authentication-commands'
+import './project-commands'
+import './search-datasets-commands'
+import './workflow-commands'
+
 Cypress.Cookies.defaults({
     whitelist: ["auth_tkt"]
 })

@@ -1,4 +1,5 @@
 import * as constants from './../constants';
+let to = require('./../constants');
 
 describe('Test search datasets section', () => {
     it('Test initialisation', () => {
@@ -21,7 +22,7 @@ describe('Test search datasets section', () => {
         cy.ensureSectionOpen('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
         cy.wait(1000)
         cy.get('#cy-search-facets')
-        cy.get('#cy-search-no-results-sh').should('contain', 'No results found.')
+        cy.get('#cy-search-no-results-sh').should('contain', constants.NO_RESULTS_FOUND_LABEL)
 
         // Test project SelectField
         cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 1) // List invisible
@@ -37,7 +38,7 @@ describe('Test search datasets section', () => {
         cy.get('#cy-search-facet-variable button')
     })
 
-    it('Select project:CMIP5 and variable:pr facets', () => {
+    it('Select project:CMIP5, variable:pr facets', () => {
         cy.selectFacet('project', 'CMIP5')
         cy.selectFacet('variable', 'pr')
     })
