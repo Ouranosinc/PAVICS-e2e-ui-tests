@@ -3,6 +3,7 @@ export const ABC_SUFFIX = ' ABC';
 export const SEARCH_CRITERIAS_NAME = 'CYPRESS_SEARCH_CRITERIAS_NAME';
 export const PROJECT_NAME = 'Cypress project created on ';
 export const PROJECT_DESCRIPTION = 'Cypress created this project description';
+export const TARGETED_CMIP5_DATASET_TITLE = 'pr_Amon_CanESM2_historical_r1i1p1_185001-200512.nc';
 
 // Section titles
 export const SEARCH_DATASETS_TITLE = 'Search Datasets';
@@ -25,11 +26,17 @@ export const WORKFLOW_INPUT_RESOURCE = "https://pluvier.crim.ca/twitcher/ows/pro
 export const WORKFLOW_INPUT_TYPENAME = "ADMINBOUNDARIES:canada_admin_boundaries";
 export const WORKFLOW_INPUT_FEATUREIDS =  "canada_admin_boundaries.5";
 export const WORKFLOW_INPUT_TYPENAME_ALT = "usa:states";
-export const WORKFLOW_INPUT_FEATUREIDS_ALT =  "states.10";
+export const WORKFLOW_INPUT_FEATUREIDS_ALT = "states.10";
 export const WORKFLOW_INPUT_MOSAIC = "True";
-
-// Basic workflow
 export const BASIC_WORKFLOW_NAME = "BASIC_WORKFLOW_NAME";
+export const SUBSET_WORKFLOW_NAME = "SUBSET_WORKFLOW_NAME";
+
+// Layer names
+export const LAYER_SELECTED_REGIONS_NAME = 'LAYER_SELECTED_REGIONS';
+export const LAYER_REGIONS_NAME = 'LAYER_REGIONS';
+export const LAYER_DATASET_NAME = 'LAYER_DATASET';
+
+// Workflows
 export const BASIC_WORKFLOW_JSON = {
 	"name": BASIC_WORKFLOW_NAME,
 	"tasks": [
@@ -100,6 +107,22 @@ export const BASIC_WORKFLOW_JSON = {
 		}
 	]
 };
+export const SUBSET_WORKFLOW_JSON = {
+	"name": SUBSET_WORKFLOW_NAME,
+	"tasks": [
+		{
+			"name": "Subsetting",
+			"identifier": "subset_WFS",
+			"inputs": {
+				"resource":WORKFLOW_INPUT_RESOURCE,
+				"typename": WORKFLOW_INPUT_TYPENAME,
+				"featureids": WORKFLOW_INPUT_FEATUREIDS,
+				"mosaic": WORKFLOW_INPUT_MOSAIC
+			},
+			"provider": "flyingpigeon"
+		}
+	]
+}
 export const INVALID_WORKFLOW_JSON = {
 	"name": "INVALID_WORKFLOW",
 	"tasks": [
@@ -134,5 +157,6 @@ export const MISSING_PROVIDER_WORKFLOW_JSON = {
 
 // Escape openning brackets since cypress use them as 'sequences' keywords
 export const BASIC_WORKFLOW = JSON.stringify(BASIC_WORKFLOW_JSON).replace(/{/g, '{{}');
+export const SUBSET_WORKFLOW = JSON.stringify(SUBSET_WORKFLOW_JSON).replace(/{/g, '{{}');
 export const INVALID_WORKFLOW = JSON.stringify(INVALID_WORKFLOW_JSON).replace(/{/g, '{{}');
 export const MISSING_PROVIDER_WORKFLOW = JSON.stringify(MISSING_PROVIDER_WORKFLOW_JSON).replace(/{/g, '{{}');

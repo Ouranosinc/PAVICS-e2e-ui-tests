@@ -1,5 +1,9 @@
 
-import {PROJECT_NAME, PROJECT_MANAGEMENT_TITLE} from './../constants';
+import {
+  PROJECT_NAME, 
+  PROJECT_MANAGEMENT_TITLE,
+  TARGETED_CMIP5_DATASET_TITLE
+} from './../constants';
 
 Cypress.Commands.add('createSelectTestProject', () => {
   cy.log("Create TEST Project...")
@@ -84,12 +88,11 @@ Cypress.Commands.add('removeCypressTestProjects', () => {
 
 // First dataset must a be a single file dataset
  Cypress.Commands.add('visualizeFirstSingleFileDataset', () => {
-    cy.get('.cy-project-dataset-item .cy-actions-btn').last().click()
+    cy.get('.cy-project-dataset-item .cy-actions-btn').first().click()
     cy.get('div[role=menu]').children().should('to.have.lengthOf', 3) // 3 actions attended
     cy.get('div[role=menu] #cy-visualize-item').click() // Trigger action
     cy.get('#cy-sectional-content h1').click() // Close actions menu
 })
-
 
 // Add CMIP5 dataset and visualize it
 Cypress.Commands.add('addCMIP5DatasetThenVisualize', () => {
@@ -97,5 +100,7 @@ Cypress.Commands.add('addCMIP5DatasetThenVisualize', () => {
   cy.selectCMIP5PRMonFacets()
   cy.addFirstDatasetToProject()
   cy.get('#cy-project-management').click()
+  // cy.log(`FIXME: Attended dataset title: ${TARGETED_CMIP5_DATASET_TITLE}`)
+  // cy.get('.cy-dataset-single-file-title').first().should('contain', TARGETED_CMIP5_DATASET_TITLE)
   cy.visualizeFirstSingleFileDataset()
 })

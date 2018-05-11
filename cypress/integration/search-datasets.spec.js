@@ -1,5 +1,5 @@
 import * as constants from './../constants';
-let to = require('./../constants');
+import * as yolo from 'cypress'
 
 describe('Test search datasets section', () => {
     it('Test initialisation', () => {
@@ -20,7 +20,7 @@ describe('Test search datasets section', () => {
     it('Some facets should be loaded if logged', () => {
         cy.login()
         cy.ensureSectionOpen('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
-        cy.wait(1000)
+        cy.wait(3000)
         cy.get('#cy-search-facets')
         cy.get('#cy-search-no-results-sh').should('contain', constants.NO_RESULTS_FOUND_LABEL)
 

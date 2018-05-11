@@ -1,11 +1,16 @@
 import * as constants from './../constants';
 
-Cypress.Commands.add('init', (onOpenHook = false) => {
+Cypress.Commands.add('init', (onOpenHook = true) => {
   // Intercept window.open() events
   // Needed for Download actions validations
   let hook = {
       onBeforeLoad(win) {
-          cy.stub(win, 'open').as('windowOpen')
+        // Cypress doesn't support fetch, using polyfill whatwg-fetch will transform fetch into XHR which are supported by Cypress
+        // https://github.com/cypress-io/cypress/issues/95
+        win.fetch = null
+
+        // Intercept window.open which is used for downloading files
+        cy.stub(win, 'open').as('windowOpen')
       }
   }
   cy.log("Initialisation...")
