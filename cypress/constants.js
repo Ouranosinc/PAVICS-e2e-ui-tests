@@ -35,6 +35,7 @@ export const SUBSET_WORKFLOW_NAME = "SUBSET_WORKFLOW_NAME";
 export const LAYER_SELECTED_REGIONS_NAME = 'LAYER_SELECTED_REGIONS';
 export const LAYER_REGIONS_NAME = 'LAYER_REGIONS';
 export const LAYER_DATASET_NAME = 'LAYER_DATASET';
+export const SHAPEFILE_NAME_NESTATES = 'NE_State_and_Province_Boundaries';
 
 // Workflows
 export const BASIC_WORKFLOW_JSON = {
@@ -123,6 +124,62 @@ export const SUBSET_WORKFLOW_JSON = {
 		}
 	]
 }
+export const SUBSET_PARALLEL_JSON = {
+	"name": "parsingcatalog_parallel_subset",
+	"tasks": [
+		{
+			"name": "ParsingCatalog",
+			"provider": "malleefowl",
+			"url": "https://colibri.crim.ca/twitcher/ows/proxy/malleefowl/wps",
+			"identifier": "thredds_opendap_urls",
+			"inputs": {
+				"url": "https://colibri.crim.ca/twitcher/ows/proxy/thredds/catalog/birdhouse/CMIP5/CCCMA/CanESM2/historical/day/atmos/r1i1p1/pr/catalog.xml"
+			},
+			"progress_range": [
+				0,
+				10
+			]
+		}
+	],
+	"parallel_groups": [
+		{
+			"name": "FlyGroup",
+			"map": {
+				"task": "ParsingCatalog",
+				"output": "output",
+				"as_reference": false
+			},
+			"reduce": {
+				"task": "Subsetting",
+				"output": "output",
+				"as_reference": true
+			},
+			"max_processes": 4,
+			"tasks": [
+				{
+					"name": "Subsetting",
+					"provider": "flyingpigeon",
+					"url": "https://colibri.crim.ca/twitcher/ows/proxy/flyingpigeon/wps",
+					"identifier": "subset_WFS",
+					"inputs": {
+						"typename": "opengeo:NE_State_and_Province_Boundaries",
+						"featureids": "NE_State_and_Province_Boundaries.564",
+						"mosaic": "False"
+					},
+					"linked_inputs": {
+						"resource": {
+							"task": "FlyGroup"
+						}
+					},
+					"progress_range": [
+						10,
+						100
+					]
+				}
+			]
+		}
+	]
+};
 export const INVALID_WORKFLOW_JSON = {
 	"name": "INVALID_WORKFLOW",
 	"tasks": [

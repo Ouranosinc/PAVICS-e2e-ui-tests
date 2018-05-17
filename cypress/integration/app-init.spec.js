@@ -1,5 +1,10 @@
 import { PROJECT_NAME, PROJECT_MANAGEMENT_TITLE } from './../constants'
 describe('App initialization', () => {
+
+  beforeEach(() => {
+    cy.initBeforeEach()
+  })
+
   it('Init basic stuff', () => {
     cy.init()
     cy.ensureSectionOpen('cy-project-management', PROJECT_MANAGEMENT_TITLE)

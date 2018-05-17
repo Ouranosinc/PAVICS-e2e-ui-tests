@@ -16,5 +16,8 @@
   "license": "MIT",
   "dependencies": {
     "cypress": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1"
   }
 }

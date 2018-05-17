@@ -3,6 +3,11 @@ import {SEARCH_DATASETS_TITLE, PROJECT_MANAGEMENT_TITLE} from './../constants';
 // Attempt to do cypress attended pure-test pattern (Needed for the Download feature)
 
 describe('Test project datasets actions (Visualize/Remove/Download)', () => {
+
+    beforeEach(() => {
+        cy.initBeforeEach()
+    })
+    
     it('Test initialisation', () => {
         cy.init()
         cy.login()
@@ -10,9 +15,8 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
         cy.ensureSectionOpen('cy-search-datasets', SEARCH_DATASETS_TITLE)
     })
 
-    it('Launch search with project:Ouranos and variable:PCP facets that should return a minimum of one result', () => {
-        cy.selectOuranosPCPFacets()
-        cy.wait(2000)
+    it('Launch search with "project:CMIP5 experiment:rpc85 variable:pr frequency:day" facets that should return a minimum of one result', () => {
+        cy.selectCMIP5RCP85PRDayFacets()
         cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
         cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
     })
@@ -25,11 +29,8 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
         cy.resetFacets()
     })
 
-    it('Launch search with "project:CMIP5, variable:pr & frequency:mon" facets that should return a minimum of two results', () => {
-        cy.selectCMIP5PRMonFacets()
-        cy.wait(2000)
-        cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
-        cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
+    it('Launch search with "project:Ouranos and variable:PCP" facets that should return a minimum of two results', () => {
+        cy.selectOuranosPCPFacets()
     })
 
     it('Select first dataset and add it to current project', () => {
@@ -50,8 +51,6 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
     */
     it('TODO: Select current project last dataset and trigger action "Visualize"', () => {
         cy.visualizeFirstSingleFileDataset()
-        
-        cy.wait(5000)
         cy.get('#cy-big-color-palette').should('be.visible')
         /*cy.get('canvas').trigger('mousedown')
             .trigger('mousemove', { which: 1, pageX: 600, pageY: 600 })

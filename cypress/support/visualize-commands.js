@@ -45,6 +45,29 @@ Cypress.Commands.add('simulateOpenLayersEvent', (ol, map, type, x, y, opt_shiftK
         } 
     });
   })
+
+  Cypress.Commands.add('selectFirstShapeFile', (key) => {
+    cy.get('#cy-layerswitcher-regions-tab').click()
+    cy.get(`.cy-layerswitcher-shapefile-item`).first().click()
+  })
+
+  Cypress.Commands.add('selectShapeFileByKey', (key) => {
+    cy.get('#cy-layerswitcher-regions-tab').click()
+    cy.get(`.cy-layerswitcher-shapefile-item#cy-shapefile-name-${key}`).click()
+  })
+
+  Cypress.Commands.add('selectRegionByCoordinates', (x , y) => {
+		cy.route({method: 'get', url: new RegExp(/geoserver\/wfs?.*request=GetFeature.*/i)}).as('geoserverGetFeature')
+    cy.window().then((window) => {
+			console.log("Current window: %o", window)
+			console.log("Current ol3 global object: %o", window.ol)
+			console.log("Current OLComponent.map instance: %o", window.cyCurrentMap)
+			// Should select Alberta province
+			cy.simulateOpenLayersEvent(window.ol, window.cyCurrentMap, 'pointerdown', x, y);
+			cy.simulateOpenLayersEvent(window.ol, window.cyCurrentMap, 'pointerup', x, y);
+			cy.wait('@geoserverGetFeature')
+    })
+  })
   
   //Click
   /*cy.get('canvas')

@@ -12,6 +12,10 @@ import {
 // Attempt to do cypress attended pure-test pattern (Needed for the Download feature)
 
 describe('Test workflow CRUD actions', () => {
+    beforeEach(() => {
+        cy.initBeforeEach()
+    })
+    
     it('Test initialisation', () => {
         cy.init()
         cy.login()

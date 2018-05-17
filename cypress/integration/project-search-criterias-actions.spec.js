@@ -3,6 +3,11 @@ let countResults = 0;
 let searchCriteriasCount = 0;
 
 describe('Test project search criterias actions (Remove/Relaunch/Restore)', () => {
+
+    beforeEach(() => {
+        cy.initBeforeEach()
+    })
+    
     it('Test initialisation', () => {
         cy.init()
         cy.login()
@@ -12,7 +17,6 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
     it('Create search criteria(s) and count results', () => {
         cy.get('#cy-search-datasets').click()
         cy.selectFacet('project', 'ObsGrid')
-        cy.wait(2000)
         cy.get('#cy-search-results #cy-search-results-count')
 
         // Note total results for future validation
@@ -60,9 +64,11 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
     })
 
     it('Select current project newly added search criterias and trigger action "Relaunch search"', () => {
+        cy.route('/wps/pavicsearch?**').as('pavicsSearch')
         cy.get('#cy-project-management').click()
         cy.get('.cy-project-search-criterias-item .cy-actions-btn').first().click()
         cy.get('div[role=menu] #cy-relaunch-item').click()
+        cy.wait('@pavicsSearch')
 
         // Should be redirected to Search Datasets setion
         cy.get('#cy-sectional-content').should('be.visible')
@@ -70,7 +76,6 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
     })
 
     it('Validate relaunch results match', () => {
-        cy.wait(1000)
         cy.get('#cy-search-results #cy-search-results-count')
         cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('eq', countResults) 
     })

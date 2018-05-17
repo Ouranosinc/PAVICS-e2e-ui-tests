@@ -1,7 +1,11 @@
 import * as constants from './../constants';
-import * as yolo from 'cypress'
 
 describe('Test search datasets section', () => {
+
+    beforeEach(() => {
+        cy.initBeforeEach()
+    })
+    
     it('Test initialisation', () => {
         cy.init()
         cy.login()
@@ -18,9 +22,10 @@ describe('Test search datasets section', () => {
     })
 
     it('Some facets should be loaded if logged', () => {
+        cy.route('/wps/pavicsearch?**').as('pavicsSearch')
         cy.login()
         cy.ensureSectionOpen('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
-        cy.wait(3000)
+        cy.wait('@pavicsSearch')
         cy.get('#cy-search-facets')
         cy.get('#cy-search-no-results-sh').should('contain', constants.NO_RESULTS_FOUND_LABEL)
 
@@ -86,13 +91,14 @@ describe('Test search datasets section', () => {
     })
 
     it('Select two datasets and add them to current project', () => {
+        cy.route({method: 'post', url: new RegExp(/api\/Projects\/.*\/datasets/i)}).as('addDataset')
         cy.get('#cy-add-datasets-btn').should('have.attr', 'disabled')
         cy.get('.cy-dataset-result-item').should('to.have.length.above', 1)
         cy.get('.cy-dataset-result-item input[type=checkbox]').first().check()
         cy.get('.cy-dataset-result-item input[type=checkbox]').last().check()
         cy.get('#cy-add-datasets-btn').should('not.have.attr', 'disabled')
         cy.get('#cy-add-datasets-btn').click()
-        cy.wait(1000)
+        cy.wait('@addDataset')
         cy.get('.notification-container .notification-message h4').should('contain', 'Success')
         cy.get('.notification-container .notification-success').click({multiple: true}) // There will be one alert by added dataset
     })
