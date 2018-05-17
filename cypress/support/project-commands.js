@@ -1,6 +1,6 @@
 
 import {
-  PROJECT_NAME, 
+  PROJECT_NAME,
   PROJECT_MANAGEMENT_TITLE,
   TARGETED_CMIP5_DATASET_TITLE
 } from './../constants';
@@ -13,7 +13,7 @@ Cypress.Commands.add('createSelectTestProject', () => {
   cy.get('#cy-create-project-tab').click()
 
   // Create
-  cy.get('input#cy-project-name-tf').clear().type(PROJECT_NAME + new Date().toISOString()) 
+  cy.get('input#cy-project-name-tf').clear().type(PROJECT_NAME + new Date().toISOString())
   cy.get('#cy-create-project-btn').click()
   cy.get('.notification-container .notification-message h4').should('contain', 'Success')
   cy.get('.notification-container .notification-success').click()
@@ -52,7 +52,7 @@ Cypress.Commands.add('removeProjectByProjectId', (id) => {
 Cypress.Commands.add('removeCurrentProject', () => {
   // TODO: Remove project by id, use selectProjectByProjectId then 
   cy.log("Remove current (test) project...")
-  cy.route({method: 'delete', url: new RegExp(/api\/Projects\/.*/i)}).as('deleteProject')
+  cy.route({ method: 'delete', url: new RegExp(/api\/Projects\/.*/i) }).as('deleteProject')
 
   cy.ensureSectionOpen('cy-project-management', PROJECT_MANAGEMENT_TITLE)
   cy.get('#cy-delete-project-btn').click()
@@ -71,12 +71,12 @@ Cypress.Commands.add('removeCypressTestProjects', () => {
   let found = false
   cy.get('div[role=menu] span').each(($el, index, $list) => {
     // Make sure selected project has cypress project name definition
-    cy.route({method: 'delete', url: new RegExp(/api\/Projects\/.*/i)}).as('deleteProject')
+    cy.route({ method: 'delete', url: new RegExp(/api\/Projects\/.*/i) }).as('deleteProject')
     cy.log(`Looping '${$el.children().first().children().first().children().first().text()}'`)
-    if($el.children().first().children().first().children().first().text().includes(PROJECT_NAME) && !found){
+    if ($el.children().first().children().first().children().first().text().includes(PROJECT_NAME) && !found) {
       found = true
       cy.log(`Removing project '${$el.children().first().children().first().children().first().text()}'...`)
-      cy.wrap($el).click()  
+      cy.wrap($el).click()
       cy.get('#cy-delete-project-btn').click()
       cy.get('#cy-confirm-ok-btn').click()
       cy.wait('@deleteProject')
@@ -89,10 +89,10 @@ Cypress.Commands.add('removeCypressTestProjects', () => {
 })
 
 // First dataset must a be a single file dataset
- Cypress.Commands.add('visualizeFirstSingleFileDataset', () => {
-  cy.route({url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetCapabilities.*$/i), method: 'get' }).as('ncwms2GetCapabilities')
-  cy.route({url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMetadata.*$/i), method: 'get' }).as('ncwms2GetMetadata')
-  cy.route({url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMap.*$/i), method: 'get' }).as('ncwms2GetMap')
+Cypress.Commands.add('visualizeFirstSingleFileDataset', () => {
+  cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetCapabilities.*$/i), method: 'get' }).as('ncwms2GetCapabilities')
+  cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMetadata.*$/i), method: 'get' }).as('ncwms2GetMetadata')
+  cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMap.*$/i), method: 'get' }).as('ncwms2GetMap')
   cy.get('.cy-project-dataset-item .cy-actions-btn').first().click()
   cy.get('div[role=menu]').children().should('to.have.lengthOf', 3) // 3 actions attended
   cy.get('div[role=menu] #cy-visualize-item').click() // Trigger action

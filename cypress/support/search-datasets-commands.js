@@ -6,7 +6,7 @@ import * as constants from './../constants';
 Cypress.Commands.add('selectFacet', (key, value) => {
   cy.route('/wps/pavicsearch?**').as('pavicsSearch')
   cy.get(`#cy-search-facet-${key} button`).click()
-  cy.get(`#cy-search-facet-${key}-${value} input`).check({force: true})
+  cy.get(`#cy-search-facet-${key}-${value} input`).check({ force: true })
   cy.get(`#cy-search-facet-${key} button`).click() // TODO a backdrop click outside should also work eventually
   cy.wait('@pavicsSearch')
 })
@@ -53,7 +53,7 @@ Cypress.Commands.add('saveSearchCriterias', (name) => {
 })
 
 Cypress.Commands.add('addFirstDatasetToProject', () => {
-  cy.route({method: 'post', url: new RegExp(/api\/Projects\/.*\/datasets/i)}).as('addDataset')
+  cy.route({ method: 'post', url: new RegExp(/api\/Projects\/.*\/datasets/i) }).as('addDataset')
   cy.get('.cy-dataset-result-item input[type=checkbox]').first().check()
   cy.get('#cy-add-datasets-btn').click()
   cy.wait('@addDataset')

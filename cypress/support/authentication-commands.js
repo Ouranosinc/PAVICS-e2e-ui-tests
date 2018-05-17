@@ -18,7 +18,7 @@ Cypress.Commands.add('login', (seedData = 'fixture:todos') => {
   cy.getCookie('auth_tkt').should('exist')
   cy.get('#cy-account-management').click()
 })
-  
+
 Cypress.Commands.add('logout', (seedData = 'fixture:todos') => {
   cy.route('/logout').as('logout')
   cy.getCookie('auth_tkt').should('exist')

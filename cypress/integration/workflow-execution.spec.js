@@ -65,7 +65,7 @@ describe('Test workflow configuration and execution', () => {
 	})
 
 	it('Launch the workflow and validate sent values were modified', () => {
-	cy.route({method: 'post', url: new RegExp(/.*phoenix\/processes\/execute.*/i)}).as('phoenixExecute')
+		cy.route({ method: 'post', url: new RegExp(/.*phoenix\/processes\/execute.*/i) }).as('phoenixExecute')
 		cy.get('#cy-execute-process-btn').click().then(() => {
 			cy.log(localStorage.getItem('executed_workflow'))
 			expect(localStorage.getItem('executed_workflow')).to.not.be.null
@@ -146,7 +146,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.selectRegionByCoordinates(-200, 100)
 		cy.selectRegionByCoordinates(0, 0)
 		cy.window().then((window) => {
-		  cy.hasOpenLayersSelectedRegion(window.ol, window.cyCurrentMap, 2) // 1 selected region attended
+			cy.hasOpenLayersSelectedRegion(window.ol, window.cyCurrentMap, 2) // 1 selected region attended
 		})
 		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').should('not.have.value', '')
 	})

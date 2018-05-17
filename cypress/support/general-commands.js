@@ -8,7 +8,7 @@ Cypress.Commands.add('init', () => {
   cy.clearLocalStorage()
 
   // Visit main page
-  cy.visit('/',  {
+  cy.visit('/', {
     onBeforeLoad(win) {
       // Cypress doesn't support fetch, using polyfill whatwg-fetch will transform fetch into XHR which are supported by Cypress
       // https://github.com/cypress-io/cypress/issues/95
@@ -26,15 +26,15 @@ Cypress.Commands.add('init', () => {
   // cy.wait(['@getProjects', '@geoserverGetCapabilities','@getFacets'])
 
   // Remove all alerts: selected project(info), logged(success),
-  cy.get('.notification-container .notification').click({multiple:true})
+  cy.get('.notification-container .notification').click({ multiple: true })
 
   // Minimize Visualize panels
-  cy.get('button.cy-minimize-btn').click({multiple: true})
+  cy.get('button.cy-minimize-btn').click({ multiple: true })
 })
 
 Cypress.Commands.add('initBeforeEach', (seedData = 'fixture:todos') => {
   // Server should be started before every test
-  cy.server({stub: false})
+  cy.server({ stub: false })
 })
 
 
