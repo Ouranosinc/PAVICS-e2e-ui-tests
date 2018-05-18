@@ -29,6 +29,7 @@ export const WORKFLOW_INPUT_TYPENAME_ALT = "usa:states";
 export const WORKFLOW_INPUT_FEATUREIDS_ALT = "states.10";
 export const WORKFLOW_INPUT_MOSAIC = "True";
 export const BASIC_WORKFLOW_NAME = "BASIC_WORKFLOW_NAME";
+export const WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME = "WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME";
 export const SUBSET_WORKFLOW_NAME = "SUBSET_WORKFLOW_NAME";
 
 // Layer names
@@ -108,6 +109,7 @@ export const BASIC_WORKFLOW_JSON = {
 		}
 	]
 };
+
 export const SUBSET_WORKFLOW_JSON = {
 	"name": SUBSET_WORKFLOW_NAME,
 	"tasks": [
@@ -124,6 +126,7 @@ export const SUBSET_WORKFLOW_JSON = {
 		}
 	]
 }
+
 export const SUBSET_PARALLEL_JSON = {
 	"name": "parsingcatalog_parallel_subset",
 	"tasks": [
@@ -180,6 +183,25 @@ export const SUBSET_PARALLEL_JSON = {
 		}
 	]
 };
+
+export const WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_JSON = {
+	"name": WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME,
+	"tasks": [
+		{
+			"name": "region_subset",
+			"identifier": "subset_countries",
+			"inputs": {
+				"region": ""
+			},
+			"progress_range": [
+				0,
+				100
+			],
+			"provider": "flyingpigeon"
+		}
+	]
+};
+
 export const INVALID_WORKFLOW_JSON = {
 	"name": "INVALID_WORKFLOW",
 	"tasks": [
@@ -198,6 +220,7 @@ export const INVALID_WORKFLOW_JSON = {
 	],
 	"parallel_groups": []
 };
+
 export const MISSING_PROVIDER_WORKFLOW_JSON = {
 	"name": "MISSING_PROVIDER_WORKFLOW",
 	"tasks": [
@@ -215,5 +238,6 @@ export const MISSING_PROVIDER_WORKFLOW_JSON = {
 // Escape openning brackets since cypress use them as 'sequences' keywords
 export const BASIC_WORKFLOW = JSON.stringify(BASIC_WORKFLOW_JSON).replace(/{/g, '{{}');
 export const SUBSET_WORKFLOW = JSON.stringify(SUBSET_WORKFLOW_JSON).replace(/{/g, '{{}');
+export const SINGLE_ALLOWED_VALUES_TASK_WORKFLOW = JSON.stringify(WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_JSON).replace(/{/g, '{{}');
 export const INVALID_WORKFLOW = JSON.stringify(INVALID_WORKFLOW_JSON).replace(/{/g, '{{}');
 export const MISSING_PROVIDER_WORKFLOW = JSON.stringify(MISSING_PROVIDER_WORKFLOW_JSON).replace(/{/g, '{{}');
