@@ -18,6 +18,7 @@ import './general-commands'
 import './authentication-commands'
 import './project-commands'
 import './search-datasets-commands'
+import './visualize-commands'
 import './workflow-commands'
 
 Cypress.Cookies.defaults({
