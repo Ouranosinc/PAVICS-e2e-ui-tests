@@ -28,6 +28,7 @@ export const WORKFLOW_INPUT_TYPENAME = "opengeo:NE_State_and_Province_Boundaries
 export const WORKFLOW_INPUT_FEATUREIDS =  "NE_State_and_Province_Boundaries.564";
 export const WORKFLOW_INPUT_MOSAIC = "True";
 export const BASIC_WORKFLOW_NAME = "BASIC_WORKFLOW_NAME";
+export const WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME = "WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME";
 export const SUBSET_WORKFLOW_NAME = "SUBSET_WORKFLOW_NAME";
 export const IDENTIFIER_SUBSET_WFS = "subset_WFS";
 export const IDENTIFIER_THREDDS_URLS = "thredds_urls";
@@ -110,6 +111,27 @@ export const BASIC_WORKFLOW_JSON = {
 		}
 	]
 };
+
+export const WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_JSON = {
+	"name": WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME,
+	"tasks": [
+		{
+			"name": "region_subset",
+			"identifier": "subset_countries",
+			"inputs": {
+				"region": ""
+			},
+			"progress_range": [
+				0,
+				100
+			],
+			"provider": "flyingpigeon"
+		}
+	]
+};
+
+
+
 export const INVALID_WORKFLOW_JSON = {
 	"name": "INVALID_WORKFLOW",
 	"tasks": [
@@ -145,5 +167,6 @@ export const MISSING_PROVIDER_WORKFLOW_JSON = {
 // Escape openning brackets since cypress use them as 'sequences' keywords
 export const BASIC_WORKFLOW = JSON.stringify(BASIC_WORKFLOW_JSON).replace(/{/g, '{{}');
 export const SUBSET_WORKFLOW = JSON.stringify(SUBSET_WORKFLOW_JSON).replace(/{/g, '{{}');
+export const SINGLE_ALLOWED_VALUES_TASK_WORKFLOW = JSON.stringify(WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_JSON).replace(/{/g, '{{}');
 export const INVALID_WORKFLOW = JSON.stringify(INVALID_WORKFLOW_JSON).replace(/{/g, '{{}');
 export const MISSING_PROVIDER_WORKFLOW = JSON.stringify(MISSING_PROVIDER_WORKFLOW_JSON).replace(/{/g, '{{}');

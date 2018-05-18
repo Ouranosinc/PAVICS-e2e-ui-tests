@@ -62,6 +62,10 @@ describe('Test single wps and workflow monitoring', () => {
   
   it('TODO: Monitoring should now have one pending task', () => {
 		
+  })
+  
+  it('TODO: After waiting 30 seconds, monitoring should now have one in-progress/completed task', () => {
+		
 	})
 
 	it('Test closing tasks', () => {
