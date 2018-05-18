@@ -151,10 +151,10 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').should('not.have.value', '')
 	})
 
-	/*it('Test closing tasks', () => {
+  it('Test closing tasks', () => {
 			cy.ensureSectionClose('cy-data-processing', DATA_PROCESSING_TITLE)
 			cy.removeCurrentProject()
 			cy.logout()
-	})*/
+	})
 
 })
