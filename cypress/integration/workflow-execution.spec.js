@@ -7,13 +7,9 @@ import {
 	SEARCH_DATASETS_TITLE,
 	SHAPEFILE_NAME_NESTATES,
 	WORKFLOW_INPUT_FEATUREIDS,
-	WORKFLOW_INPUT_FEATUREIDS_ALT,
 	WORKFLOW_INPUT_RESOURCE,
-	WORKFLOW_INPUT_TYPENAME,
-	WORKFLOW_INPUT_TYPENAME_ALT
+	WORKFLOW_INPUT_TYPENAME
 } from './../constants';
-
-// Attempt to do cypress attended pure-test pattern (Needed for the Download feature)
 
 describe('Test workflow configuration and execution', () => {
 	beforeEach(() => {
@@ -46,22 +42,22 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
 		cy.get('div[role=menu] #cy-configure-run-item').click()
 		cy.get('#cy-configure-run-step').children().last().should('contain', SUBSET_WORKFLOW_NAME)
-		cy.wait(10000) // Parsing workflow time is actually hard to predict
+		cy.wait(5000) // Parsing workflow time is actually hard to predict
 	})
 
 	it('Process form should contains 4 inputs with predefined default values', () => {
 		cy.get('.cy-process-form-field').as('fields')
 		cy.get('.cy-process-form-field').should('to.have.lengthOf', 4)
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.resource"] input').should('have.value', WORKFLOW_INPUT_RESOURCE)
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.typename"] input').should('have.value', WORKFLOW_INPUT_TYPENAME)
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').should('have.value', WORKFLOW_INPUT_FEATUREIDS)
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.mosaic"] input').should('be.checked')
+		cy.get(`.cy-process-form-field [data-cy-name="${IDENTIFIER_SUBSET_WFS}.resource"] input`).should('have.value', WORKFLOW_INPUT_RESOURCE)
+		cy.get(`.cy-process-form-field [data-cy-name="${IDENTIFIER_SUBSET_WFS}.typename"] input`).should('have.value', WORKFLOW_INPUT_TYPENAME)
+		cy.get(`.cy-process-form-field [data-cy-name="${IDENTIFIER_SUBSET_WFS}.featureids] input`).should('have.value', WORKFLOW_INPUT_FEATUREIDS)
+		cy.get(`.cy-process-form-field [data-cy-name="${IDENTIFIER_SUBSET_WFS}.mosaic] input`).should('be.checked')
 	})
 
 	it('Modify values of form fields "subset_WFS.typename" and "subset_WFS.featureids"', () => {
 		expect(localStorage.getItem('executed_workflow')).to.be.null
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.typename"] input').clear().type(WORKFLOW_INPUT_TYPENAME_ALT)
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').clear().type(WORKFLOW_INPUT_FEATUREIDS_ALT)
+		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.typename"] input').clear().type(WORKFLOW_INPUT_TYPENAME)
+		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').clear().type(WORKFLOW_INPUT_FEATUREIDS)
 	})
 
 	it('Launch the workflow and validate sent values were modified', () => {
@@ -73,8 +69,8 @@ describe('Test workflow configuration and execution', () => {
 			// Do not expect(localStorage.getItem('executed_workflow')).to.eq(something) 
 			// Because workflow is transformed by the platform afterward
 			let executed = JSON.parse(localStorage.getItem('executed_workflow'))
-			expect(executed.tasks[0].inputs.typename).to.eq(WORKFLOW_INPUT_TYPENAME_ALT)
-			expect(executed.tasks[0].inputs.featureids).to.eq(WORKFLOW_INPUT_FEATUREIDS_ALT)
+			expect(executed.tasks[0].inputs.typename).to.eq(WORKFLOW_INPUT_TYPENAME)
+			expect(executed.tasks[0].inputs.featureids).to.eq(WORKFLOW_INPUT_FEATUREIDS)
 			// TODO: Fix Mosaic that switched to False for no reason
 			expect(executed.tasks[0].inputs.mosaic).to.eq("False")
 
@@ -111,7 +107,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('#cy-data-processing').click()
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
 		cy.get('div[role=menu] #cy-configure-run-item').click()
-		cy.wait(10000)  // Parsing workflow time is actually hard to predict
+		cy.wait(5000)  // Parsing workflow time is actually hard to predict
 	})
 
 	it('"Clear all subset workflow text inputs"', () => {
@@ -126,8 +122,6 @@ describe('Test workflow configuration and execution', () => {
 	})
 
 	it('Selecting a region type in the Layer Switcher should "automatically fill subset_WFS.typename input"', () => {
-		//cy.init() // FIXME: remove
-		//cy.get('#cy-menu-layer-switcher-toggle a svg').click() // FIXME: remove
 		cy.window().then((window) => {
 			cy.hasOpenLayersLoadedRegions(window.ol, window.cyCurrentMap, false)
 		})
@@ -139,22 +133,22 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.typename"] input').should('not.have.value', '')
 	})
 
-	it('TODO Selecting a region on the map should "automatically fill subset_WFS.featureids input"', () => {
+	it('Selecting a region on the map should "automatically fill subset_WFS.featureids input"', () => {
 		cy.get('#cy-menu-map-controls-toggle a svg').click()
 		cy.get('#cy-region-selection-btn').click()
 
 		cy.selectRegionByCoordinates(-200, 100)
 		cy.selectRegionByCoordinates(0, 0)
 		cy.window().then((window) => {
-			cy.hasOpenLayersSelectedRegion(window.ol, window.cyCurrentMap, 2) // 1 selected region attended
+			cy.hasOpenLayersSelectedRegion(window.ol, window.cyCurrentMap, 2) // 2 selected region attended
 		})
 		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').should('not.have.value', '')
 	})
 
-	/*it('Test closing tasks', () => {
+	it('Test closing tasks', () => {
 			cy.ensureSectionClose('cy-data-processing', DATA_PROCESSING_TITLE)
 			cy.removeCurrentProject()
 			cy.logout()
-	})*/
+	})
 
 })

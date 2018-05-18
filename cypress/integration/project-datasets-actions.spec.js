@@ -52,11 +52,6 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
   it('TODO: Select current project last dataset and trigger action "Visualize"', () => {
     cy.visualizeFirstSingleFileDataset()
     cy.get('#cy-big-color-palette').should('be.visible')
-    /*cy.get('canvas').trigger('mousedown')
-        .trigger('mousemove', { which: 1, pageX: 600, pageY: 600 })
-        .trigger('mouseup')*/
-
-    // TODO: Validate a dataset is being loaded on the map
     // TODO: Validate there's a dataset now selected in the LayerSwitcher
   })
 
