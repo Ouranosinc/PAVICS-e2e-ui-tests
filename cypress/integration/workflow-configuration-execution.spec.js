@@ -148,11 +148,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.cy-process-form-field input[name="subset_WFS.featureids"]').should('not.have.value', '')
 	})
 
-<<<<<<< HEAD:cypress/integration/workflow-configuration-execution.spec.js
-	it('Test closing tasks', () => {
-=======
-  it('Test closing tasks', () => {
->>>>>>> master:cypress/integration/workflow-execution.spec.js
+  it('Test closing tasks', () => {gration/workflow-execution.spec.js
 			cy.ensureSectionClose('cy-data-processing', DATA_PROCESSING_TITLE)
 			cy.removeCurrentProject()
 			cy.logout()
