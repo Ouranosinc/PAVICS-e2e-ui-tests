@@ -68,6 +68,7 @@ export const SUBSET_WORKFLOW_JSON = {
 		}
 	]
 }
+
 export const BASIC_WORKFLOW_JSON = {
 	"name": BASIC_WORKFLOW_NAME,
 	"tasks": [
@@ -141,8 +142,11 @@ export const WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_JSON = {
 	]
 };
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> master
 export const INVALID_WORKFLOW_JSON = {
 	"name": "INVALID_WORKFLOW",
 	"tasks": [
@@ -161,6 +165,7 @@ export const INVALID_WORKFLOW_JSON = {
 	],
 	"parallel_groups": [] // Empty array shouldn't be valid by ajv JSON schema validation
 };
+
 export const MISSING_PROVIDER_WORKFLOW_JSON = {
 	"name": "MISSING_PROVIDER_WORKFLOW",
 	"tasks": [
