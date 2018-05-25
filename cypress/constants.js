@@ -3,13 +3,14 @@ export const ABC_SUFFIX = ' ABC';
 export const SEARCH_CRITERIAS_NAME = 'CYPRESS_SEARCH_CRITERIAS_NAME';
 export const PROJECT_NAME = 'Cypress project created on ';
 export const PROJECT_DESCRIPTION = 'Cypress created this project description';
-export const TARGETED_CMIP5_DATASET_TITLE = 'pr_Amon_CanESM2_historical_r1i1p1_185001-200512.nc';
+export const TARGETED_CMIP5_DATASET_TITLE = 'pr_day_CanESM2_rcp85_r1i1p1_20060101-21001231.nc';
+export const TARGETED_CMIP5_DATASET_FILESERVER_URL =  `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/CMIP5/CCCMA/CanESM2/rcp85/day/atmos/r1i1p1/pr/pr_day_CanESM2_rcp85_r1i1p1_20060101-21001231.nc`
 
 // Section titles
 export const SEARCH_DATASETS_TITLE = 'Search Datasets';
 export const PROJECT_MANAGEMENT_TITLE = 'Project Management';
 export const DATA_PROCESSING_TITLE = 'Data Processing';
-export const PROCESS_MONITORING_TITLE = 'Process Monitoring';
+export const PROCESS_MONITORING_TITLE = 'Processes Monitoring';
 export const ACCOUNT_MANAGEMENT_TITLE = 'Account Management';
 
 // Labels
@@ -39,13 +40,23 @@ export const LAYER_SELECTED_REGIONS_NAME = 'LAYER_SELECTED_REGIONS';
 export const LAYER_REGIONS_NAME = 'LAYER_REGIONS';
 export const LAYER_DATASET_NAME = 'LAYER_DATASET';
 export const SHAPEFILE_NAME_NESTATES = 'NE_State_and_Province_Boundaries';
+export const SUBSETTING_TASK_NAME = 'SUBSETTING_TASK_NAME';
+export const PARSE_CATALOG_TASK_NAME = 'DOWNLOAD_TASK_NAME';
+
+//Monitoring status
+export const STATUS_PENDING = 'PENDING';
+export const STATUS_INPROGRESS = 'IN PROGRESS';
+export const STATUS_COMPLETED = 'COMPLETED';
+export const STATUS_FAILED = 'FAILED';
+export const STATUS_PAUSED = 'PAUSED';
+export const STATUS_UNKNOWN = 'UNKNOWN STATUS';
 
 // Workflows
 export const SUBSET_WORKFLOW_JSON = {
 	"name": SUBSET_WORKFLOW_NAME,
 	"tasks": [
 		{
-			"name": "Subsetting",
+			"name": SUBSETTING_TASK_NAME,
 			"identifier": IDENTIFIER_SUBSET_WFS,
 			"inputs": {
 				"resource":WORKFLOW_INPUT_RESOURCE,
@@ -61,7 +72,7 @@ export const BASIC_WORKFLOW_JSON = {
 	"name": BASIC_WORKFLOW_NAME,
 	"tasks": [
 		{
-			"name": "ParsingCatalog",
+			"name": PARSE_CATALOG_TASK_NAME,
 			"provider": "malleefowl",
 			"identifier": IDENTIFIER_THREDDS_URLS,
 			"inputs": {
@@ -77,19 +88,19 @@ export const BASIC_WORKFLOW_JSON = {
 		{
 			"name": "FlyGroup",
 			"map": {
-				"task": "ParsingCatalog",
+				"task": PARSE_CATALOG_TASK_NAME,
 				"output": "output",
 				"as_reference": false
 			},
 			"reduce": {
-				"task": "Subsetting",
+				"task": SUBSETTING_TASK_NAME,
 				"output": "output",
 				"as_reference": true
 			},
 			"max_processes": 4,
 			"tasks": [
 				{
-					"name": "Subsetting",
+					"name": SUBSETTING_TASK_NAME,
 					"provider": "flyingpigeon",
 					"identifier": "subset_WFS",
 					"inputs": {
@@ -136,7 +147,7 @@ export const INVALID_WORKFLOW_JSON = {
 	"name": "INVALID_WORKFLOW",
 	"tasks": [
 		{
-			"name": "Downloading",
+			"name": PARSE_CATALOG_TASK_NAME,
 			"identifier": IDENTIFIER_THREDDS_URLS,
 			"inputs": {
 				"url": ""

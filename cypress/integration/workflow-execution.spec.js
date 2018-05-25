@@ -1,7 +1,8 @@
 import {
 	SUBSET_WORKFLOW,
 	SUBSET_WORKFLOW_NAME,
-	DATA_PROCESSING_TITLE,
+  DATA_PROCESSING_TITLE,
+  IDENTIFIER_SUBSET_WFS,
 	MISSING_PROVIDER_WORKFLOW,
 	SCIENTIFIC_WORKFLOWS_LABEL,
 	SEARCH_DATASETS_TITLE,
@@ -23,14 +24,14 @@ describe('Test workflow configuration and execution', () => {
 		cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
 	})
 
-	it('Create a workflow with a missing provider named "test"', () => {
+	it('Create a workflow with a missing provider name should be a success', () => {
 		cy.createWorkflow(MISSING_PROVIDER_WORKFLOW)
 		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
 		cy.get('.notification-container .notification-success').click()
 		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '1')
 	})
 
-	it('Create a subset workflow', () => {
+	it('Create a subset workflow should be a success', () => {
 		cy.createWorkflow(SUBSET_WORKFLOW)
 		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
 		cy.get('.notification-container .notification-success').click()
@@ -48,16 +49,16 @@ describe('Test workflow configuration and execution', () => {
 	it('Process form should contains 4 inputs with predefined default values', () => {
 		cy.get('.cy-process-form-field').as('fields')
 		cy.get('.cy-process-form-field').should('to.have.lengthOf', 4)
-		cy.get(`.cy-process-form-field [data-cy-name="${IDENTIFIER_SUBSET_WFS}.resource"] input`).should('have.value', WORKFLOW_INPUT_RESOURCE)
-		cy.get(`.cy-process-form-field [data-cy-name="${IDENTIFIER_SUBSET_WFS}.typename"] input`).should('have.value', WORKFLOW_INPUT_TYPENAME)
-		cy.get(`.cy-process-form-field [data-cy-name="${IDENTIFIER_SUBSET_WFS}.featureids] input`).should('have.value', WORKFLOW_INPUT_FEATUREIDS)
-		cy.get(`.cy-process-form-field [data-cy-name="${IDENTIFIER_SUBSET_WFS}.mosaic] input`).should('be.checked')
+		cy.get(`.cy-process-form-field input[name="${IDENTIFIER_SUBSET_WFS}.resource"]`).should('have.value', WORKFLOW_INPUT_RESOURCE)
+		cy.get(`.cy-process-form-field input[name="${IDENTIFIER_SUBSET_WFS}.typename"]`).should('have.value', WORKFLOW_INPUT_TYPENAME)
+		cy.get(`.cy-process-form-field input[name="${IDENTIFIER_SUBSET_WFS}.featureids"]`).should('have.value', WORKFLOW_INPUT_FEATUREIDS)
+		cy.get(`.cy-process-form-field input[name="${IDENTIFIER_SUBSET_WFS}.mosaic"]`).should('be.checked')
 	})
 
 	it('Modify values of form fields "subset_WFS.typename" and "subset_WFS.featureids"', () => {
 		expect(localStorage.getItem('executed_workflow')).to.be.null
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.typename"] input').clear().type(WORKFLOW_INPUT_TYPENAME)
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').clear().type(WORKFLOW_INPUT_FEATUREIDS)
+		cy.get('.cy-process-form-field input[name="subset_WFS.typename"]').clear().type(WORKFLOW_INPUT_TYPENAME)
+		cy.get('.cy-process-form-field input[name="subset_WFS.featureids"]').clear().type(WORKFLOW_INPUT_FEATUREIDS)
 	})
 
 	it('Launch the workflow and validate sent values were modified', () => {
@@ -80,7 +81,7 @@ describe('Test workflow configuration and execution', () => {
 		})
 	})
 
-	it('Go back to the workflow list, select invalid provider workflow(first) and trigger action "Configure & Run"', () => {
+	it('Trying to "Configure & Run" a workflow containing an invalid provider should prompt a warning at parsing phase', () => {
 		cy.get('#cy-step-back-btn').click()
 		cy.get('.cy-workflow-item .cy-actions-btn').first().click()
 		cy.get('div[role=menu] #cy-configure-run-item').click()
@@ -88,11 +89,12 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.notification-container .notification-warning').click()
 		// Stalled in mode 'Parsing Workflow'
 		cy.get('#cy-step-back-btn').click()
-	})
+  })
+
 
 	it('TODO: "Launching a workflow with missing required inputs should trigger a warning"', () => {
-		// cy.get('.cy-process-form-field [data-cy-name="subset_WFS.typename"] input').clear()
-		// cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').clear()
+		// cy.get('.cy-process-form-field input[name="subset_WFS.typename"]').clear()
+		// cy.get('.cy-process-form-field input[name="subset_WFS.featureids"]').clear()
 		// TODO: Such validation to be implemented
 	})
 
@@ -111,14 +113,14 @@ describe('Test workflow configuration and execution', () => {
 	})
 
 	it('"Clear all subset workflow text inputs"', () => {
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.resource"] input').clear()
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.typename"] input').clear()
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').clear()
+		cy.get('.cy-process-form-field input[name="subset_WFS.resource"]').clear()
+		cy.get('.cy-process-form-field input[name="subset_WFS.typename"]').clear()
+		cy.get('.cy-process-form-field input[name="subset_WFS.featureids"]').clear()
 	})
 
 	it('Selecting a dataset in the Layer Switcher should "automatically fill subset_WFS.resource input"', () => {
 		cy.get('.cy-layerswitcher-dataset-item').first().click()
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.resource"] input').should('not.have.value', '')
+		cy.get('.cy-process-form-field input[name="subset_WFS.resource"]').should('not.have.value', '')
 	})
 
 	it('Selecting a region type in the Layer Switcher should "automatically fill subset_WFS.typename input"', () => {
@@ -130,7 +132,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.window().then((window) => {
 			cy.hasOpenLayersLoadedRegions(window.ol, window.cyCurrentMap, true)
 		})
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.typename"] input').should('not.have.value', '')
+		cy.get('.cy-process-form-field input[name="subset_WFS.typename"]').should('not.have.value', '')
 	})
 
 	it('Selecting a region on the map should "automatically fill subset_WFS.featureids input"', () => {
@@ -142,7 +144,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.window().then((window) => {
 			cy.hasOpenLayersSelectedRegion(window.ol, window.cyCurrentMap, 2) // 2 selected region attended
 		})
-		cy.get('.cy-process-form-field [data-cy-name="subset_WFS.featureids"] input').should('not.have.value', '')
+		cy.get('.cy-process-form-field input[name="subset_WFS.featureids"]').should('not.have.value', '')
 	})
 
 	it('Test closing tasks', () => {

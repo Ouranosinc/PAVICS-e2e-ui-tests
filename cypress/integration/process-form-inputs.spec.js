@@ -16,7 +16,11 @@ import {
 } from './../constants';
 
 
-describe('Test allowed values task ', () => {
+describe('Test process form inputs allowed values', () => {
+  beforeEach(() => {
+		cy.initBeforeEach()
+  })
+  
   it('Test initialisation', () => {
     cy.init();
     cy.createSelectTestProject(); // @testProjectId is the current test project id
@@ -38,9 +42,29 @@ describe('Test allowed values task ', () => {
     cy.wait(4000);
   });
 
-  it('has a select field', () => {
+  it('Form inputs should contain exactly one select field', () => {
     expect(localStorage.getItem('executed_workflow')).to.be.null;
     cy.get('.cy-workflow-input-select-field').should('to.have.lengthOf', 1);
+  });
+
+  it('TODO: Validate select input allowed values', () => {
+    
+  });
+
+  it('TODO: Validate textfield form input', () => {
+    
+  });
+
+  it('TODO: Validate checkbox form input', () => {
+    
+  });
+
+  it('TODO: Validate datetime form input', () => {
+    
+  });
+
+  it('TODO: Validate input with multiple values (minOccurs/maxOccurs)', () => {
+    
   });
 
   it('Test closing tasks', () => {
