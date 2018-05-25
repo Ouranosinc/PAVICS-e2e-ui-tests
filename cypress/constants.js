@@ -142,11 +142,6 @@ export const WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_JSON = {
 	]
 };
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> master
 export const INVALID_WORKFLOW_JSON = {
 	"name": "INVALID_WORKFLOW",
 	"tasks": [
