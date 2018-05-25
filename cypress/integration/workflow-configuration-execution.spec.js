@@ -105,7 +105,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('#cy-reset-dataset-btn').click()
 	})
 
-	it('"Navigate workflow list, select subset workflow" (last) and trigger action "Configure & Run"', () => {
+	it('Select subset workflow (last) and trigger action "Configure & Run"', () => {
 		cy.get('#cy-data-processing').click()
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
 		cy.get('div[role=menu] #cy-configure-run-item').click()
@@ -140,7 +140,8 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('#cy-region-selection-btn').click()
 
 		cy.selectRegionByCoordinates(-200, 100)
-		cy.selectRegionByCoordinates(0, 0)
+    cy.selectRegionByCoordinates(0, 0)
+    cy.wait(2000)
 		cy.window().then((window) => {
 			cy.hasOpenLayersSelectedRegion(window.ol, window.cyCurrentMap, 2) // 2 selected region attended
 		})
