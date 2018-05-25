@@ -74,7 +74,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
     // TODO: Eventually capture URL, and try cy.request() in this test to see if a file is returned (200)
     // Always returning 401 ATM (cypress should pass cookies...)
     /*cy.request({
-        url: "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/CMIP5/CCCMA/CanESM2/historical/day/atmos/r1i1p1/pr/pr_day_CanESM2_historical_r1i1p1_18500101-20051231.nc",
+        url: TARGETED_CMIP5_DATASET_FILESERVER_URL,
         headers: {'Content-Type': 'application/netcdf'}
     }).then((response) => {
         expect(response.status).should('eq', "200")
@@ -121,16 +121,16 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
       cy.stub(window, 'open').as('windowOpen')
       cy.get('.cy-project-dataset-item.cy-project-dataset-level-0 .cy-actions-btn').last().click()
       cy.get('div[role=menu] #cy-download-all-item').click()
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1961.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1962.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1963.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1964.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1965.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1966.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1967.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1968.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1969.nc")
-      cy.get('@windowOpen').should('be.calledWith', "https://pluvier.crim.ca/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1970.nc")
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1961.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1962.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1963.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1964.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1965.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1966.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1967.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1968.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1969.nc`)
+      cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1970.nc`)
       // FIXME: Fix the feature itself since Chrome will prevent from opening 10 windows at once
     })
   })
