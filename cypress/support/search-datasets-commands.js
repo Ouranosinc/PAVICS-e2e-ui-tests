@@ -23,10 +23,26 @@ Cypress.Commands.add('selectCMIP5RCP85PRDayFacets', () => {
   cy.selectFacet('experiment', 'rcp85')
   cy.selectFacet('variable', 'pr')
   cy.selectFacet('frequency', 'day')
+  // TODO (hirondelle) Expecting only one result
   cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
   cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
-  // TODO: First file should contains only one file
+  // cy.get('.cy-dataset-result-item div').last().text().should('to.match', new RegExp(/(1 file)/))
+  // TODO: Dataset should contains only one file
 })
+
+Cypress.Commands.add('selectCMIP5RCP45PRDayFacets', () => {
+  cy.selectFacet('project', 'CMIP5')
+  cy.addAdditionnalCriterias('experiment')
+  cy.selectFacet('experiment', 'rcp45')
+  cy.selectFacet('variable', 'pr')
+  cy.selectFacet('frequency', 'day')
+  // TODO (hirondelle) Expecting only one result
+  cy.get('#cy-search-results #cy-pagination').should('have.attr', 'data-cy-total').and('to.be.gte', 1)
+  cy.get('.cy-dataset-result-item').should('to.have.length.above', 0)
+  // cy.get('.cy-dataset-result-item div').last.should('to.match', new RegExp(/(2 files)/))
+  // TODO: Dataset should contains two files
+})
+
 
 // Search datasets section should be opened as well as some facets loaded
 Cypress.Commands.add('selectOuranosPCPFacets', () => {
