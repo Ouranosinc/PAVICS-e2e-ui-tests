@@ -23,6 +23,7 @@ describe('Test process form inputs allowed values', () => {
   
   it('Test initialisation', () => {
     cy.init();
+    cy.login()
     cy.createSelectTestProject(); // @testProjectId is the current test project id
     cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
   });

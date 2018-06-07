@@ -15,6 +15,13 @@ Cypress.Commands.add('login', (seedData = 'fixture:todos') => {
 
   cy.get('.notification-container .notification-message h4').should('contain', 'Success')
   cy.get('.notification-container .notification-success').click()
+
+  cy.get('.notification-container .notification-message h4').should('contain', 'Information')
+  cy.get('.notification-container .notification-info').click()
+
+  // Remove all alerts: selected project(info), logged(success),
+  // cy.get('.notification-container .notification').click({ multiple: true })
+
   cy.getCookie('auth_tkt').should('exist')
   cy.get('#cy-account-management').click()
 })

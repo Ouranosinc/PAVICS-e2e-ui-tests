@@ -18,10 +18,10 @@ Cypress.Commands.add('createSelectTestProject', () => {
   cy.get('.notification-container .notification-message h4').should('contain', 'Success')
   cy.get('.notification-container .notification-success').click()
 
-  // Select
-  cy.get('#cy-current-project-tab').click()
-  cy.get('#cy-project-selector button').click()
-  cy.get('div[role=menu]').children().last().click()
+  // Select, deprecated project is auto selected now
+  // cy.get('#cy-current-project-tab').click()
+  // cy.get('#cy-project-selector button').click()
+  // cy.get('div[role=menu]').children().last().click()
   cy.get('.notification-container .notification-message h4').should('contain', 'Information')
   cy.get('.notification-container .notification-info').click()
 

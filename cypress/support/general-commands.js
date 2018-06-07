@@ -26,7 +26,7 @@ Cypress.Commands.add('init', () => {
   // cy.wait(['@getProjects', '@geoserverGetCapabilities','@getFacets'])
 
   // Remove all alerts: selected project(info), logged(success),
-  cy.get('.notification-container .notification').click({ multiple: true })
+  // cy.get('.notification-container .notification').click({ multiple: true })
 
   // Minimize Visualize panels
   cy.get('button.cy-minimize-btn').click({ multiple: true })

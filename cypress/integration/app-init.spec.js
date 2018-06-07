@@ -7,6 +7,7 @@ describe('App initialization', () => {
 
   it('Init basic stuff', () => {
     cy.init()
+    cy.login()
     cy.ensureSectionOpen('cy-project-management', PROJECT_MANAGEMENT_TITLE)
   })
 
