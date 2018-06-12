@@ -1,4 +1,8 @@
-import * as constants from './../constants';
+import {
+  NO_RESULTS_FOUND_LABEL,
+  SEARCH_CRITERIAS_NAME,
+  SEARCH_DATASETS_TITLE
+} from './../constants';
 
 describe('Test search datasets section', () => {
 
@@ -10,24 +14,14 @@ describe('Test search datasets section', () => {
     cy.init()
     cy.login()
     cy.createSelectTestProject()
-    cy.logout()
-  })
-
-  it('No facets should be loaded if not logged', () => {
-    cy.ensureSectionOpen('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
-    cy.get('#cy-search-no-facets')
-    cy.get('#cy-search-no-facets').should('contain', 'No facets found.')
-    cy.get('.notification-container .notification-message h4').should('contain', 'Warning')
-    cy.get('.notification-container .notification-warning').click()
   })
 
   it('Some facets should be loaded if logged', () => {
     cy.route('/wps/pavicsearch?**').as('pavicsSearch')
-    cy.login()
-    cy.ensureSectionOpen('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
+    cy.ensureSectionOpen('cy-search-datasets', SEARCH_DATASETS_TITLE)
     cy.wait('@pavicsSearch')
     cy.get('#cy-search-facets')
-    cy.get('#cy-search-no-results-sh').should('contain', constants.NO_RESULTS_FOUND_LABEL)
+    cy.get('#cy-search-no-results-sh').should('contain', NO_RESULTS_FOUND_LABEL)
 
     // Test project SelectField
     cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 1) // List invisible
@@ -57,10 +51,10 @@ describe('Test search datasets section', () => {
     cy.get('#cy-search-results #cy-pagination').invoke('attr', 'data-cy-from').as('from')
     cy.get('#cy-search-results #cy-pagination').invoke('attr', 'data-cy-to').as('to')
     cy.get('#cy-search-results #cy-pagination').invoke('attr', 'data-cy-total').as('total')
-    cy.get('@pageCount').then(function (pageCount) {
-      cy.get('@from').then(function (from) {
-        cy.get('@to').then(function (to) {
-          cy.get('@total').then(function (total) {
+    cy.get('@pageCount').then( (pageCount) => {
+      cy.get('@from').then( (from) => {
+        cy.get('@to').then( (to) => {
+          cy.get('@total').then( (total) => {
             cy.get('#cy-search-results #cy-pagination-showing').should('contain', `Showing ${from} to ${to} of ${total}`)
             // TODO: Test pagination
           })
@@ -76,7 +70,7 @@ describe('Test search datasets section', () => {
   })
 
   it('Add a "Search Criteria(s) name and save them in the current project', () => {
-    cy.saveSearchCriterias(constants.SEARCH_CRITERIAS_NAME)
+    cy.saveSearchCriterias(SEARCH_CRITERIAS_NAME)
   })
 
   it('Verify search criteria(s) were added to current project', () => {
@@ -119,7 +113,7 @@ describe('Test search datasets section', () => {
   })
 
   it('Close Search Datasets panel', () => {
-    cy.ensureSectionClose('cy-search-datasets', constants.SEARCH_DATASETS_TITLE)
+    cy.ensureSectionClose('cy-search-datasets', SEARCH_DATASETS_TITLE)
   })
 
   it('Test closing tasks', () => {

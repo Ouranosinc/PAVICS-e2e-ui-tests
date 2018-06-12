@@ -1,23 +1,25 @@
 
-Cypress.Commands.add('login', (seedData = 'fixture:todos') => {
+Cypress.Commands.add('login', (username = Cypress.env('MAGPIE_USERNAME'), password = Cypress.env('MAGPIE_PASSWORD')) => {
   cy.route('/login').as('login')
   cy.route('/session').as('session')
 
   cy.getCookie('auth_tkt').should('not.exist')
   cy.get('#cy-account-management').click()
-  // TODO: Select Ziggurat explicitely
-  cy.get('#cy-login-user-tf').clear().type(Cypress.env('MAGPIE_USERNAME'))
-  cy.get('#cy-login-password-tf').clear().type(Cypress.env('MAGPIE_PASSWORD'))
+  // TODO: Select Ouranos explicitely
+  cy.get('#cy-login-user-tf').clear().type(username)
+  cy.get('#cy-login-password-tf').clear().type(password)
   cy.get('#cy-login-btn').click()
 
-  // cy.wait('@login') FIME: Migth actually not be called
+  // cy.wait('@login') FIXME: Migth actually not be called
   cy.wait('@session')
 
   cy.get('.notification-container .notification-message h4').should('contain', 'Success')
   cy.get('.notification-container .notification-success').click()
 
-  cy.get('.notification-container .notification-message h4').should('contain', 'Information')
-  cy.get('.notification-container .notification-info').click()
+  cy.wait(3000)
+
+  // Could be either Information (auto-selected project) or Warning (no project to be selected)
+  cy.get('.notification-container .notification').click()
 
   // Remove all alerts: selected project(info), logged(success),
   // cy.get('.notification-container .notification').click({ multiple: true })
@@ -26,15 +28,15 @@ Cypress.Commands.add('login', (seedData = 'fixture:todos') => {
   cy.get('#cy-account-management').click()
 })
 
-Cypress.Commands.add('logout', (seedData = 'fixture:todos') => {
+Cypress.Commands.add('logout', () => {
   cy.route('/logout').as('logout')
   cy.getCookie('auth_tkt').should('exist')
   cy.get('#cy-account-management').click()
   cy.get('#cy-logout-btn').click()
-  cy.wait('@logout')
-  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-  cy.get('.notification-container .notification-success').click()
-  cy.clearCookie('auth_tkt') // TODO: Shouldn't be usefull after completion of https://github.com/Ouranosinc/pavics-sdi/issues/33
-  cy.getCookie('auth_tkt').should('not.exist')
-  cy.get('#cy-account-management').click()
+  cy.wait('@logout').then(() => {
+    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
+    cy.get('.notification-container .notification-success').click()
+    cy.getCookie('auth_tkt').should('not.exist')
+    cy.get('#cy-account-management').click()
+  })
 })

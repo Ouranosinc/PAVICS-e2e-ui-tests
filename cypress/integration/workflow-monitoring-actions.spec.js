@@ -33,13 +33,18 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
     //cy.selectProjectByProjectId(517) // Trigger the test once then note projectId
     //cy.get('#cy-project-management').click()
     //cy.ensureSectionOpen('cy-process-monitoring', PROCESS_MONITORING_TITLE)
-	})
-
-	it('Create a basic workflow', () => {
+  })
+  
+  it('Validate 4 sample workflows were created for the newly created TEST project', () => {
+    // 4 sample workflow auto-created for a new project
+    cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '4')
+  })
+  
+  it('Create a basic workflow', () => {
 		cy.createWorkflow(BASIC_WORKFLOW)
 		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
 		cy.get('.notification-container .notification-success').click()
-		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '1')
+		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5') // 4 + 1
 		cy.get('.cy-workflow-item > div > div > div').last().should('contain', BASIC_WORKFLOW_NAME)
 	})
 
@@ -47,7 +52,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
 		cy.get('div[role=menu] #cy-configure-run-item').click()
 		cy.get('#cy-configure-run-step').children().last().should('contain', BASIC_WORKFLOW_NAME)
-		cy.wait(5000) // Parsing workflow time is actually hard to predict
+		cy.wait(7000) // Parsing workflow time is actually hard to predict
 	})
 
 	it('Process form should contains 4 inputs with predefined default values', () => {
@@ -64,7 +69,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
 
 	it('Launching the workflow should be a success', () => {
     cy.route({ method: 'post', url: new RegExp(/.*phoenix\/processes\/execute.*/i) }).as('phoenixExecute')
-    cy.route({ method: 'post', url: "/api/Jobs?**" }).as('addJob')
+    cy.route({ method: 'post', url: new RegExp(/.*\/api\/Projects\/.*\/jobs?.*/i) }).as('addJob')
     cy.get('#cy-execute-process-btn').click().then(() => {
       expect(localStorage.getItem('executed_workflow')).to.not.be.null
       cy.wait(['@phoenixExecute', '@addJob']).then(() => {
@@ -76,6 +81,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
   })
   
   it('Monitoring should now have "exactly one job with status PENDING"', () => {
+    cy.wait(3000) // Potential delay in phoenix registering job
     cy.route({ method: 'get', url: "/phoenix/jobs?**" }).as('phoenixJobs')
     cy.ensureSectionOpen('cy-process-monitoring', PROCESS_MONITORING_TITLE)
     cy.wait('@phoenixJobs')
@@ -83,6 +89,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-0').should('to.have.lengthOf', 1)
     cy.get('#cy-process-monitoring #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "1")
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-0 .cy-monitoring-status')
+      .first()
       .should('contain', STATUS_PENDING)
   })
   
@@ -91,11 +98,12 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
     // TODO: We should intercept and parse results until it has completed !
     cy.wait(90000)
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-0 .cy-monitoring-status')
+      .first()
       .should('contain', STATUS_COMPLETED)
   })
   
   it('All workflow "two tasks should be COMPLETED"', () => {
-    cy.get('.cy-monitoring-list-item.cy-monitoring-level-0').click()
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-0').first().click()
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-1').should('to.have.lengthOf', 2)
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-1 .cy-monitoring-status').each(($el) => {
       cy.wrap($el).should('contain', STATUS_COMPLETED)
@@ -114,6 +122,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
     cy.get('#cy-advanced-toggle').click()
     cy.get('input#cy-workspace-path-tf').invoke('val').as('persistPath')
     cy.get('@persistPath').then(path => {
+      cy.get('#cy-overwrite-destination-cb').check()
       cy.get('#cy-persist-dialog-launch-btn').click()
       // `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/${path}`,
       cy.request(`${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/catalog/birdhouse/${path}`).then(response => {
@@ -145,9 +154,72 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-actions-btn').as('actionsBtn')
     cy.triggerVisualize('@actionsBtn', 'cy-visualize-item', 4)
   })
+  
+	it('Select first sample workflow (Parsing catalog & parallel subsetting) and trigger action "Configure & Run"', () => {
+    // cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
+    cy.get('#cy-data-processing').click()
+    cy.get('.cy-workflow-item .cy-actions-btn').eq(1).click() // Select item #2
+    cy.get('div[role=menu] #cy-configure-run-item').click()
+    cy.wait(7000) // Parsing workflow time is actually hard to predict
+    // TODO: Could be done better with multiple route/wait
+  })
 
-  it('TODO: Monitor workflow with multiple dataset files and subsetting outputs', () => {
+  it('Launching the workflow should be a success', () => {
+    cy.route({ method: 'post', url: new RegExp(/.*phoenix\/processes\/execute.*/i) }).as('phoenixExecute')
+    cy.route({ method: 'post', url: new RegExp(/.*\/api\/Projects\/.*\/jobs?.*/i) }).as('addJob')
+    cy.get('#cy-execute-process-btn').click().then(() => {
+      expect(localStorage.getItem('executed_workflow')).to.not.be.null
+      cy.wait(['@phoenixExecute', '@addJob']).then(() => {
+        cy.get('.notification-container .notification-message h4').should('contain', 'Success')
+        cy.get('.notification-container .notification-success').click({ multiple: true })
+      })
+    })
+    cy.ensureSectionClose('cy-data-processing', DATA_PROCESSING_TITLE)
+  })
+  
+  it('Monitoring section should now list "exactly two jobs"', () => {
+    cy.wait(3000) // Potential delay in phoenix registering job
+    cy.route({ method: 'get', url: "/phoenix/jobs?**" }).as('phoenixJobs')
+    cy.ensureSectionOpen('cy-process-monitoring', PROCESS_MONITORING_TITLE)
+    cy.wait('@phoenixJobs')
 
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-0').should('to.have.lengthOf', 2)
+    cy.get('#cy-process-monitoring #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "2")
+  })
+
+  it('The first job should have status PENDING"', () => {
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-0')
+      .first()
+      .get('.cy-monitoring-status')
+      .should('contain', STATUS_PENDING)
+  })
+  
+  it('After waiting 90 seconds, "first job should now have status COMPLETED"', () => {
+    cy.route({ method: 'get', url: "/phoenix/jobs?**" }).as('phoenixJobs')
+    // TODO: We should intercept and parse results until it has completed !
+    cy.wait(90000)
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-0')
+      .first()
+      .get('.cy-monitoring-status')
+      .should('contain', STATUS_COMPLETED)
+  })
+  
+  it('Workflow "Parsing Catalog task should be COMPLETED"', () => {
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-0').first().click()
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-1').should('to.have.lengthOf', 1)
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-1 .cy-monitoring-status')
+      .first()
+      .should('contain', STATUS_COMPLETED)
+  })
+
+  it('Workflow "Subsetting task should contains 10 parallel tasks with status COMPLETED"', () => {
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-parallel').should('to.have.lengthOf', 1)
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-parallel').first().click()
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-2').should('to.have.lengthOf', 10)
+
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-monitoring-status').each(($el) => {
+      cy.wrap($el).should('contain', STATUS_COMPLETED)
+    })
   })
 
 	it('Test closing tasks', () => {
