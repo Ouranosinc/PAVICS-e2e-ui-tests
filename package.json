@@ -15,7 +15,7 @@
   "author": "Renaud Hébert-Legault",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^3.0.1"
+    "cypress": "^2.1.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1"
