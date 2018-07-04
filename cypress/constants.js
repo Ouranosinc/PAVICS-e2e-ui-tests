@@ -20,6 +20,8 @@ export const SCIENTIFIC_WORKFLOWS_LABEL = 'Scientific Workflows';
 export const WPS_PROCESSES_LABEL = 'WPS processes';
 export const NO_RESULTS_FOUND_LABEL = "No results found."
 export const NO_WORKFLOWS_FOUND_LABEL = "No workflows yet"
+export const PERMISSION_READ_LABEL = 'READ';
+export const PERMISSION_WRITE_LABEL = 'WRITE';
 
 // Workflow Inputs
 // Concatenate prefix Cypress.env('CYPRESS_baseUrl') later

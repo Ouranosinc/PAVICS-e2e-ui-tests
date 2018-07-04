@@ -21,7 +21,7 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
 
     // Note total results for future validation
     cy.get('#cy-search-results #cy-pagination').invoke('attr', 'data-cy-total').as('total')
-    cy.get('@total').then(function (total) {
+    cy.get('@total').then((total) => {
       countResults = total
       cy.log(countResults)
     })

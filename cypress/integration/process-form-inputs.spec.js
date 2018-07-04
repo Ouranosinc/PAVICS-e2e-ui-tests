@@ -23,15 +23,17 @@ describe('Test process form inputs allowed values', () => {
   
   it('Test initialisation', () => {
     cy.init();
+    cy.login()
     cy.createSelectTestProject(); // @testProjectId is the current test project id
     cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
   });
 
   it('Create a basic workflow', () => {
+    cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '4');
     cy.createWorkflow(SINGLE_ALLOWED_VALUES_TASK_WORKFLOW);
     cy.get('.notification-container .notification-message h4').should('contain', 'Success');
     cy.get('.notification-container .notification-success').click();
-    cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '1');
+    cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5'); // 4 + 1
     cy.get('.cy-workflow-item > div > div > div').last().should('contain', WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME)
   });
 

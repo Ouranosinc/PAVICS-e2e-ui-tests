@@ -91,7 +91,10 @@ Cypress.Commands.add('triggerVisualize', (actionsBtnAlias, visualizeItemId, acti
     // Error <ServiceExceptionReport> Must provide a value for VERSION attended tho
     cy.wrap(xhr.status).should('eq', 200)
   })
-  cy.get('#cy-sectional-content h1').click() // Close actions menu
+  // cy.get('#cy-sectional-content h1').click() // Close actions menu
+
+  cy.get('.notification-container .notification-message h4').should('contain', 'Information')
+  cy.get('.notification-container .notification-info').click()
 })
 
 // First dataset must a be a single file dataset

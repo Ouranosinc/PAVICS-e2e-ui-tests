@@ -25,17 +25,18 @@ describe('Test workflow configuration and execution', () => {
 	})
 
 	it('Create a workflow with a missing provider name should be a success', () => {
+    cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '4')
 		cy.createWorkflow(MISSING_PROVIDER_WORKFLOW)
 		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
 		cy.get('.notification-container .notification-success').click()
-		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '1')
+		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5') // 4 + 1
 	})
 
 	it('Create a subset workflow should be a success', () => {
 		cy.createWorkflow(SUBSET_WORKFLOW)
 		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
 		cy.get('.notification-container .notification-success').click()
-		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '2')
+		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '6') // 4 + 1 + 1
 		cy.get('.cy-workflow-item > div > div > div').last().should('contain', SUBSET_WORKFLOW_NAME)
 	})
 
@@ -43,7 +44,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
 		cy.get('div[role=menu] #cy-configure-run-item').click()
 		cy.get('#cy-configure-run-step').children().last().should('contain', SUBSET_WORKFLOW_NAME)
-		cy.wait(5000) // Parsing workflow time is actually hard to predict
+		cy.wait(7000) // Parsing workflow time is actually hard to predict
 	})
 
 	it('Process form should contains 4 inputs with predefined default values', () => {
@@ -83,7 +84,7 @@ describe('Test workflow configuration and execution', () => {
 
 	it('Trying to "Configure & Run" a workflow containing an invalid provider should prompt a warning at parsing phase', () => {
 		cy.get('#cy-step-back-btn').click()
-		cy.get('.cy-workflow-item .cy-actions-btn').first().click()
+		cy.get('.cy-workflow-item .cy-actions-btn').eq(4).click()
 		cy.get('div[role=menu] #cy-configure-run-item').click()
 		cy.get('.notification-container .notification-message h4').should('contain', 'Warning')
 		cy.get('.notification-container .notification-warning').click()
@@ -109,7 +110,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('#cy-data-processing').click()
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
 		cy.get('div[role=menu] #cy-configure-run-item').click()
-		cy.wait(5000)  // Parsing workflow time is actually hard to predict
+		cy.wait(7000)  // Parsing workflow time is actually hard to predict
 	})
 
 	it('"Clear all subset workflow text inputs"', () => {
@@ -148,7 +149,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.cy-process-form-field input[name="subset_WFS.featureids"]').should('not.have.value', '')
 	})
 
-  it('Test closing tasks', () => {gration/workflow-execution.spec.js
+  it('Test closing tasks', () => {
 			cy.ensureSectionClose('cy-data-processing', DATA_PROCESSING_TITLE)
 			cy.removeCurrentProject()
 			cy.logout()

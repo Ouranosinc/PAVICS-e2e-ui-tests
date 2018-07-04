@@ -82,7 +82,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
   })
 
   it('Select current project first dataset (CMIP5 1 file) and trigger action "Remove"', () => {
-    cy.route({ method: 'delete', url: new RegExp(/api\/Datasets\/.*/i) }).as('deleteDataset')
+    cy.route({ method: 'delete', url: new RegExp(/api\/Projects\/.*\/datasets\/.*/i) }).as('deleteDataset')
     cy.get('.cy-project-dataset-item.cy-project-dataset-level-0 .cy-actions-btn').first().click()
     cy.get('div[role=menu] #cy-remove-item').click()
     cy.get('#cy-confirm-ok-btn').click()
@@ -138,7 +138,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
   it('Select current project first dataset (Ouranos 10 files) first NetCDF file and trigger action "Remove file"', () => {
     cy.get('#cy-sectional-content h1').click() // Forcing close actions menu
 
-    cy.route({ method: 'patch', url: new RegExp(/api\/Datasets\/.*/i) }).as('updateDataset')
+    cy.route({ method: 'put', url: new RegExp(/api\/Projects\/.*\/datasets\/.*/i) }).as('updateDataset')
     cy.get('.cy-project-dataset-item.cy-project-dataset-level-1 .cy-actions-btn').first().click()
     cy.get('div[role=menu] #cy-remove-item').click()
     cy.get('#cy-confirm-ok-btn').click()
@@ -153,7 +153,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
   })
 
   it('Select current project first dataset (Ouranos 9 files) and trigger action "Remove"', () => {
-    cy.route({ method: 'delete', url: new RegExp(/api\/Datasets\/.*/i) }).as('deleteDataset')
+    cy.route({ method: 'delete', url: new RegExp(/api\/Projects\/.*\/datasets\/.*/i) }).as('deleteDataset')
     cy.get('.cy-project-dataset-item.cy-project-dataset-level-0 .cy-actions-btn').last().click()
     cy.get('div[role=menu] #cy-remove-all-item').click()
     cy.get('#cy-confirm-ok-btn').click()
