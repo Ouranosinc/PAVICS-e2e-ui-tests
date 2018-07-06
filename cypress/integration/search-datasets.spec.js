@@ -25,16 +25,16 @@ describe('Test search datasets section', () => {
 
     // Test project SelectField
     cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 1) // List invisible
-    cy.get('#cy-search-facet-project button').click()
+    cy.get('#cy-search-facet-project[role=button]').click()
     cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 2) // List is now visible
     cy.get('#cy-search-facet-project-list > div').children().last().children().should('to.have.length.above', 3) // TODO: Could depend on thredds permissions
-    cy.get('#cy-search-facet-project button').click() // TODO a backdrop click outside should also work eventually
+    cy.get('#cy-search-facet-project[role=button]').click() // TODO a backdrop click outside should also work eventually
     cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 1) // List invisible
 
     // TODO: could try same tests for all 4 SelectFields
-    cy.get('#cy-search-facet-frequency button')
-    cy.get('#cy-search-facet-model button')
-    cy.get('#cy-search-facet-variable button')
+    cy.get('#cy-search-facet-frequency[role=button]')
+    cy.get('#cy-search-facet-model[role=button]')
+    cy.get('#cy-search-facet-variable[role=button]')
   })
 
   it('Select project:CMIP5, variable:pr facets', () => {

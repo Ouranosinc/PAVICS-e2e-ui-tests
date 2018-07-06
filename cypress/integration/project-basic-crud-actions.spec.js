@@ -45,7 +45,7 @@ describe('Test project basic CRUD actions', () => {
     cy.get('#cy-delete-project-btn').click()
     cy.get('#cy-confirm-ok-btn').click()
     cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').first().click()
+    cy.get('.notification-container .notificatioRn-success').first().click()
   })
 
   it('No project should be selected', () => {

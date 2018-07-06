@@ -50,7 +50,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
 
 	it('Select created subset workflow (last) and trigger action "Configure & Run"', () => {
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
-		cy.get('div[role=menu] #cy-configure-run-item').click()
+		cy.get('ul[role=listbox] #cy-configure-run-item').click()
 		cy.get('#cy-configure-run-step').children().last().should('contain', BASIC_WORKFLOW_NAME)
 		cy.wait(7000) // Parsing workflow time is actually hard to predict
 	})
@@ -118,7 +118,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
   
   it('Trigger action "Persist" on NetCDF Subsetting output', () => {
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-actions-btn').click()
-    cy.get('div[role=menu] #cy-persist-item').click()
+    cy.get('ul[role=listbox] #cy-persist-item').click()
     cy.get('#cy-advanced-toggle').click()
     cy.get('input#cy-workspace-path-tf').invoke('val').as('persistPath')
     cy.get('@persistPath').then(path => {
@@ -134,7 +134,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
   it('Trigger action "Download" on NetCDF Subsetting output', () => {
     // Workaround: Figuring out resource url with the persist dialog
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-actions-btn').click()
-    cy.get('div[role=menu] #cy-persist-item').click()
+    cy.get('ul[role=listbox] #cy-persist-item').click()
     cy.get('#cy-advanced-toggle').click()
     cy.get('input#cy-resource-link-tf').invoke('val').as('link')
     cy.get('@link').then(link => {
@@ -144,7 +144,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
       cy.window().then((window) => {
         cy.stub(window, 'open').as('windowOpen')
         cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-actions-btn').click()
-        cy.get('div[role=menu] #cy-download-item').click()
+        cy.get('ul[role=listbox] #cy-download-item').click()
         cy.get('@windowOpen').should('be.calledWith', link)
       })
     })
@@ -159,7 +159,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
     // cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
     cy.get('#cy-data-processing').click()
     cy.get('.cy-workflow-item .cy-actions-btn').eq(1).click() // Select item #2
-    cy.get('div[role=menu] #cy-configure-run-item').click()
+    cy.get('ul[role=listbox] #cy-configure-run-item').click()
     cy.wait(7000) // Parsing workflow time is actually hard to predict
     // TODO: Could be done better with multiple route/wait
   })

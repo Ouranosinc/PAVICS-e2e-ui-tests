@@ -49,14 +49,14 @@ Cypress.Commands.add('ensureSectionOpen', (sectionId, title) => {
 
   // Sectional menu should be visible with the right content
   cy.get('#cy-sectional-content').should('be.visible')
-  cy.get('#cy-sectional-content h1').should('contain', title)
+  cy.get('#cy-sectional-content h2').should('contain', title)
 })
 
 Cypress.Commands.add('ensureSectionClose', (sectionId, title) => {
   cy.log("Close section " + sectionId)
   // Sectional menu should be visible with the right content
   cy.get('#cy-sectional-content').should('be.visible')
-  cy.get('#cy-sectional-content h1').should('contain', title)
+  cy.get('#cy-sectional-content h2').should('contain', title)
 
   // Click menu section
   cy.get('#' + sectionId).click()

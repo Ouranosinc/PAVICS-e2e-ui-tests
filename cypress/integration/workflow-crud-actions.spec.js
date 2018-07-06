@@ -60,7 +60,7 @@ describe('Test workflow CRUD actions', () => {
 
   it('Edit the newly created workflow by changing his name', () => {
     cy.get('.cy-workflow-item .cy-actions-btn').last().click()
-    cy.get('div[role=menu] #cy-edit-item').click()
+    cy.get('ul[role=listbox] #cy-edit-item').click()
     cy.get('#cy-confirm-edit-workflow-tf').clear().type(BASIC_WORKFLOW.replace(BASIC_WORKFLOW_NAME, BASIC_WORKFLOW_NAME + ABC_SUFFIX))
     cy.get('#cy-confirm-save-btn').click()
     cy.get('.notification-container .notification-message h4').should('contain', 'Success')
@@ -74,7 +74,7 @@ describe('Test workflow CRUD actions', () => {
 
   it('Remove the workflow', () => {
     cy.get('.cy-workflow-item .cy-actions-btn').last().click()
-    cy.get('div[role=menu] #cy-delete-item').click()
+    cy.get('ul[role=listbox] #cy-delete-item').click()
     cy.get('#cy-confirm-ok-btn').click()
     cy.get('.notification-container .notification-message h4').should('contain', 'Success')
     cy.get('.notification-container .notification-success').first().click()

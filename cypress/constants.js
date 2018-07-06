@@ -53,6 +53,27 @@ export const STATUS_FAILED = 'FAILED';
 export const STATUS_PAUSED = 'PAUSED';
 export const STATUS_UNKNOWN = 'UNKNOWN STATUS';
 
+//Magpie permissions
+export const MAGPIE_GROUP_USERS_NAME = 'users';
+export const MAGPIE_GROUP_ADMINS_NAME = 'administrators';
+export const MAGPIE_GROUP_ANONYMOUS_NAME = 'anonymous';
+export const MAGPIE_GROUP_TESTS_NAME = 'tests';
+export const MAGPIE_NCWMS_SERVICE_NAME = 'ncwms';
+export const MAGPIE_NCWMS_GETLEGENDGRAPHIC_PERM = 'getlegendgraphic';
+export const MAGPIE_NCWMS_GETMETADATA_PERM = 'getmetadata';
+export const MAGPIE_NCWMS_GETFEATUREINFO_PERM = 'getfeatureinfo';
+export const MAGPIE_NCWMS_GETCAPABILITIES_PERM = 'getcapabilities';
+export const MAGPIE_NCWMS_GETMAP_PERM = 'getmap';
+export const MAGPIE_WFS_SERVICE_NAME = 'wfs';
+export const MAGPIE_WFS_DESCRIBEFEATURETYPE_PERM = 'describefeaturetype';
+export const MAGPIE_WFS_GETCAPABILITIES_PERM = 'getcapabilities';
+export const MAGPIE_WFS_LOCKFEATURE_PERM = 'lockfeature';
+export const MAGPIE_WFS_TRANSACTION_PERM = 'transaction';
+export const MAGPIE_WFS_GETFEATURE_PERM = 'getfeature';
+export const MAGPIE_PROJECTAPI_SERVICE_NAME = 'project-api';
+export const MAGPIE_PROJECTAPI_WRITE_PERM = 'write';
+export const MAGPIE_PROJECTAPI_READ_PERM = 'read';
+
 // Workflows
 export const SUBSET_WORKFLOW_JSON = {
 	"name": SUBSET_WORKFLOW_NAME,

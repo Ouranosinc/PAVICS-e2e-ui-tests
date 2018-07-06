@@ -25,7 +25,7 @@ describe('Test project sharing action', () => {
   })
 
   it('Share the project READ permission to another cypress user', () => {
-    cy.shareProjectToUser(Cypress.env('MAGPIE_USERNAME') + 2)
+    cy.shareProjectToUser(Cypress.env('MAGPIE_USER_USERNAME'))
   })
 
   it('Create second TEST project and note created project id as secondProjectId', () => {
@@ -42,7 +42,7 @@ describe('Test project sharing action', () => {
 
   it('Login as the other cypress user', () => {
     cy.logout()
-    cy.login(Cypress.env('MAGPIE_USERNAME') + 2, Cypress.env('MAGPIE_PASSWORD') + 2)
+    cy.login(Cypress.env('MAGPIE_USER_USERNAME'), Cypress.env('MAGPIE_USER_PASSWORD'))
   })
 
   it('Select the first previously created TEST project as current project', () => {

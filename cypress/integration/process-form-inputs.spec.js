@@ -39,7 +39,7 @@ describe('Test process form inputs allowed values', () => {
 
   it('Select allowed values workflow and trigger action "Configure & Run"', () => {
     cy.get('.cy-workflow-item .cy-actions-btn').last().click();
-    cy.get('div[role=menu] #cy-configure-run-item').click();
+    cy.get('ul[role=listbox] #cy-configure-run-item').click();
     cy.get('#cy-configure-run-step').children().last().should('contain', WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME);
     cy.wait(4000);
   });

@@ -76,8 +76,8 @@ Cypress.Commands.add('triggerVisualize', (actionsBtnAlias, visualizeItemId, acti
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMetadata.*$/i), method: 'get' }).as('ncwms2GetMetadata')
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMap.*$/i), method: 'get' }).as('ncwms2GetMap')
   cy.get(actionsBtnAlias).click()
-  cy.get('div[role=menu]').children().should('to.have.lengthOf', actionsLength) // X actions attended
-  cy.get(`div[role=menu] #${visualizeItemId}`).click() // Trigger action
+  cy.get('ul[role=listbox]').children().should('to.have.lengthOf', actionsLength) // X actions attended
+  cy.get(`ul[role=listbox] #${visualizeItemId}`).click() // Trigger action
   cy.wait('@ncwms2GetCapabilities').then((xhr) => {
     cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
     cy.wrap(xhr.status).should('eq', 200)
@@ -91,7 +91,7 @@ Cypress.Commands.add('triggerVisualize', (actionsBtnAlias, visualizeItemId, acti
     // Error <ServiceExceptionReport> Must provide a value for VERSION attended tho
     cy.wrap(xhr.status).should('eq', 200)
   })
-  // cy.get('#cy-sectional-content h1').click() // Close actions menu
+  // cy.get('#cy-sectional-content h2').click() // Close actions menu
 
   cy.get('.notification-container .notification-message h4').should('contain', 'Information')
   cy.get('.notification-container .notification-info').click()
@@ -99,27 +99,37 @@ Cypress.Commands.add('triggerVisualize', (actionsBtnAlias, visualizeItemId, acti
 
 // First dataset must a be a single file dataset
 // Project section must be opened
-Cypress.Commands.add('visualizeFirstSingleFileDataset', () => {
+// By default we expect "200 - Success" returns
+Cypress.Commands.add('visualizeFirstSingleFileDataset', (
+  getCapabilitiesAttendedCode = 200, 
+  getMetadataAttendedCode = 200,
+  getMapAttendedCode = 200) => {
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetCapabilities.*$/i), method: 'get' }).as('ncwms2GetCapabilities')
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMetadata.*$/i), method: 'get' }).as('ncwms2GetMetadata')
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMap.*$/i), method: 'get' }).as('ncwms2GetMap')
   cy.get('.cy-project-dataset-item .cy-actions-btn').first().click()
-  cy.get('div[role=menu]').children().should('to.have.lengthOf', 3) // 3 actions attended
-  cy.get('div[role=menu] #cy-visualize-item').click() // Trigger action
+  cy.get('ul[role=listbox]').children().should('to.have.lengthOf', 3) // 3 actions attended
+  cy.get('ul[role=listbox] #cy-visualize-item').click() // Trigger action
   cy.wait('@ncwms2GetCapabilities').then((xhr) => {
     cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
-    cy.wrap(xhr.status).should('eq', 200)
+    cy.wrap(xhr.status).should('eq', getCapabilitiesAttendedCode)
+
+    // If GetCapabilities fails, GetMetadata and GetMap won't be called at all
+    if (getCapabilitiesAttendedCode === 200) {
+      cy.wait('@ncwms2GetMetadata').then((xhr) => {
+        // FIXME: Error returns XML
+        // cy.wrap(xhr.response.body.type).should('eq', 'application/json')
+        cy.wrap(xhr.status).should('eq', getMetadataAttendedCode)
+      })
+      cy.wait('@ncwms2GetMap').then((xhr) => {
+        cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
+        // Error <ServiceExceptionReport> Must provide a value for VERSION attended tho
+        cy.wrap(xhr.status).should('eq', getMapAttendedCode)
+      })
+    }
   })
-  cy.wait('@ncwms2GetMetadata').then((xhr) => {
-    cy.wrap(xhr.response.body.type).should('eq', 'application/json')
-    cy.wrap(xhr.status).should('eq', 200)
-  })
-  cy.wait('@ncwms2GetMap').then((xhr) => {
-    cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
-    // Error <ServiceExceptionReport> Must provide a value for VERSION attended tho
-    cy.wrap(xhr.status).should('eq', 200)
-  })
-  cy.get('#cy-sectional-content h1').click() // Close actions menu
+
+  cy.get('#cy-sectional-content h2').click() // Close actions menu
 })
 
 Cypress.Commands.add('togglePointInfoWidget', () => {
