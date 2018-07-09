@@ -50,8 +50,8 @@ describe('Test project sharing action', () => {
   })
 
   it('First project should have only one READ permission', () => {
-    cy.get('.cy-project-permission-cb').should('to.have.lengthOf', 1)
-    cy.get('.cy-project-permission-cb label')
+    cy.get('.cy-project-permission').should('to.have.lengthOf', 1)
+    cy.get('label.cy-project-permission')
       .first()
       .should('contain', PERMISSION_READ_LABEL)
   })
@@ -62,11 +62,11 @@ describe('Test project sharing action', () => {
   })
 
   it('Second project should have READ and WRITE permissions', () => {
-    cy.get('.cy-project-permission-cb').should('to.have.lengthOf', 2)
-    cy.get('.cy-project-permission-cb label')
+    cy.get('.cy-project-permission').should('to.have.lengthOf', 2)
+    cy.get('label.cy-project-permission')
       .first()
       .should('contain', PERMISSION_READ_LABEL)
-    cy.get('.cy-project-permission-cb label')
+    cy.get('label.cy-project-permission')
       .last()
       .should('contain', PERMISSION_WRITE_LABEL)
   })

@@ -24,12 +24,13 @@ describe('Test search datasets section', () => {
     cy.get('#cy-search-no-results-sh').should('contain', NO_RESULTS_FOUND_LABEL)
 
     // Test project SelectField
-    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 1) // List invisible
+    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 3) // List invisible
     cy.get('#cy-search-facet-project[role=button]').click()
-    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 2) // List is now visible
-    cy.get('#cy-search-facet-project-list > div').children().last().children().should('to.have.length.above', 3) // TODO: Could depend on thredds permissions
+    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 3+1) // List is now visible
+    // Minimum of 3 projects shown
+    cy.get('#cy-search-facet-project-list ul').children().should('to.have.length.above', 3) // TODO: Could depend on thredds permissions
     cy.get('#cy-search-facet-project[role=button]').click() // TODO a backdrop click outside should also work eventually
-    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 1) // List invisible
+    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 3) // List invisible
 
     // TODO: could try same tests for all 4 SelectFields
     cy.get('#cy-search-facet-frequency[role=button]')
@@ -99,20 +100,20 @@ describe('Test search datasets section', () => {
 
   it('Verify two datasets were added to current project', () => {
     // Navigate to project management section
+    cy.route({ method: 'get', url: new RegExp(/api\/Projects\/.*\/datasets/i) }).as('fetchDatasets')
     cy.get('#cy-project-management').click()
+    cy.wait('@fetchDatasets')
+    cy.wait(500)
     cy.get('#cy-project-datasets #cy-pagination')
     cy.get('#cy-project-datasets #cy-pagination').should('have.attr', 'data-cy-total')
     cy.get('#cy-project-datasets #cy-pagination').invoke('attr', 'data-cy-total').as('total')
     cy.get('@total').should('eq', '2')
+  })
+
+  it('Resetting facets should remove facets and results', () => {
     // Navigate back to search datasets section
     cy.get('#cy-search-datasets').click()
-  })
-
-  it('Resetting facets should remove facets ans results', () => {
     cy.resetFacets()
-  })
-
-  it('Close Search Datasets panel', () => {
     cy.ensureSectionClose('cy-search-datasets', SEARCH_DATASETS_TITLE)
   })
 

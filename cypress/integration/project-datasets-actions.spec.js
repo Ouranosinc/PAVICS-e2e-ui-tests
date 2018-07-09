@@ -67,7 +67,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
     cy.window().then((window) => {
       cy.stub(window, 'open').as('windowOpen')
       cy.get('.cy-project-dataset-item.cy-project-dataset-level-0 .cy-actions-btn').first().click()
-      cy.get('ul[role=listbox] #cy-download-item').click()
+      cy.get('ul[role=menu] #cy-download-item').click()
       cy.get('@windowOpen').should('be.calledWith', TARGETED_CMIP5_DATASET_FILESERVER_URL)
     })
 
@@ -84,7 +84,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
   it('Select current project first dataset (CMIP5 1 file) and trigger action "Remove"', () => {
     cy.route({ method: 'delete', url: new RegExp(/api\/Projects\/.*\/datasets\/.*/i) }).as('deleteDataset')
     cy.get('.cy-project-dataset-item.cy-project-dataset-level-0 .cy-actions-btn').first().click()
-    cy.get('ul[role=listbox] #cy-remove-item').click()
+    cy.get('ul[role=menu] #cy-remove-item').click()
     cy.get('#cy-confirm-ok-btn').click()
 
     // Manage alert
@@ -104,14 +104,14 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
 
   it('Select current project first dataset (Ouranos 10 files) and trigger action "Visualize All (Aggregated)"', () => {
     cy.get('.cy-project-dataset-item .cy-actions-btn').first().as('actionsBtn')
-    cy.triggerVisualize('@actionsBtn', 'cy-visualize-all-agg-item', 4)
+    cy.triggerVisualize('@actionsBtn', 'cy-visualize-all-agg-item', 5)
     cy.get('#cy-big-color-palette').should('be.visible')
     cy.get('.cy-layerswitcher-dataset-item').should('to.have.lengthOf', 1 + 1)
   })
 
   it('Select current project first dataset (Ouranos 10 files) and trigger action "Visualize All (Splitted)"', () => {
     cy.get('.cy-project-dataset-item.cy-project-dataset-level-0 .cy-actions-btn').first().as('actionsBtn')
-    cy.triggerVisualize('@actionsBtn', 'cy-visualize-all-split-item', 4)
+    cy.triggerVisualize('@actionsBtn', 'cy-visualize-all-split-item', 5)
     cy.get('#cy-big-color-palette').should('be.visible')
     cy.get('.cy-layerswitcher-dataset-item').should('to.have.lengthOf', 1 + 1 + 10)
   })
@@ -120,7 +120,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
    cy.window().then((window) => {
       cy.stub(window, 'open').as('windowOpen')
       cy.get('.cy-project-dataset-item.cy-project-dataset-level-0 .cy-actions-btn').last().click()
-      cy.get('ul[role=listbox] #cy-download-all-item').click()
+      cy.get('ul[role=menu] #cy-download-all-item').click()
       cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1961.nc`)
       cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1962.nc`)
       cy.get('@windowOpen').should('be.calledWith', `${Cypress.config().baseUrl}/twitcher/ows/proxy/thredds/fileServer/birdhouse/ouranos/subdaily/aet/pcp/aet_pcp_1963.nc`)
@@ -136,11 +136,10 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
   })
 
   it('Select current project first dataset (Ouranos 10 files) first NetCDF file and trigger action "Remove file"', () => {
-    cy.get('#cy-sectional-content h2').click() // Forcing close actions menu
-
     cy.route({ method: 'put', url: new RegExp(/api\/Projects\/.*\/datasets\/.*/i) }).as('updateDataset')
+    cy.get('.cy-project-dataset-item.cy-project-dataset-level-0').last().click()
     cy.get('.cy-project-dataset-item.cy-project-dataset-level-1 .cy-actions-btn').first().click()
-    cy.get('ul[role=listbox] #cy-remove-item').click()
+    cy.get('ul[role=menu] #cy-remove-item').click()
     cy.get('#cy-confirm-ok-btn').click()
 
     // Manage alert
@@ -155,7 +154,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
   it('Select current project first dataset (Ouranos 9 files) and trigger action "Remove"', () => {
     cy.route({ method: 'delete', url: new RegExp(/api\/Projects\/.*\/datasets\/.*/i) }).as('deleteDataset')
     cy.get('.cy-project-dataset-item.cy-project-dataset-level-0 .cy-actions-btn').last().click()
-    cy.get('ul[role=listbox] #cy-remove-all-item').click()
+    cy.get('ul[role=menu] #cy-remove-all-item').click()
     cy.get('#cy-confirm-ok-btn').click()
 
     // Manage alert

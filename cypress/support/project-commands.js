@@ -7,6 +7,7 @@ import {
 
 Cypress.Commands.add('createSelectTestProject', () => {
   cy.log("Create TEST Project...")
+  cy.route({ method: 'post', url: new RegExp(/api\/Projects/i) }).as('createProject')
 
   // Open section and tab
   cy.get('#cy-project-management').click()
@@ -15,6 +16,7 @@ Cypress.Commands.add('createSelectTestProject', () => {
   // Create
   cy.get('input#cy-project-name-tf').clear().type(PROJECT_NAME + new Date().toISOString())
   cy.get('#cy-create-project-btn').click()
+  cy.wait('@createProject')
   cy.get('.notification-container .notification-message h4').should('contain', 'Success')
   cy.get('.notification-container .notification-success').click()
 
@@ -61,8 +63,8 @@ Cypress.Commands.add('shareProjectWriteToGroup', (groupname) => {
   cy.get('#cy-share-project-tab').click()
 
   // Select group and write permission
-  cy.get('input#cy-share-type-group-rb').check()
-  cy.get('#cy-group-selector [role=button]').click()
+  cy.get('input#cy-share-type-group').check()
+  cy.get('#cy-group-select').click()
   cy.get(`ul[role=listbox] [data-cy-item-group=${groupname}]`).click()
   cy.get('input#cy-write-permission-cb').check()
 

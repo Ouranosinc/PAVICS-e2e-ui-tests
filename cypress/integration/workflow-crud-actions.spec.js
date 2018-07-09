@@ -24,9 +24,8 @@ describe('Test workflow CRUD actions', () => {
   })
 
   it('Scientific Workflow tab should be selected by default', () => {
-    cy.get('#cy-scientific-workflow-tab > div > div').should('contain', SCIENTIFIC_WORKFLOWS_LABEL)
-    // Active tab has a red bottom border
-    // cy.get('#cy-scientific-workflow-tab').shoud('have.css', 'rgb(255, 255, 255)')
+    cy.get('#cy-scientific-workflow-tab > span > span > span').should('contain', SCIENTIFIC_WORKFLOWS_LABEL)
+    cy.get('#cy-scientific-workflow-tab').should('have.attr', 'aria-selected', 'true')
   })
 
   it('Scientific Workflow list should contains 4 sample workflows', () => {
@@ -55,12 +54,12 @@ describe('Test workflow CRUD actions', () => {
 
   it('There should be one listed workflow with the name we specified', () => {
     cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5') // 4 + 1
-    cy.get('.cy-workflow-item > div > div > div').last().should('contain', BASIC_WORKFLOW_NAME)
+    cy.get('.cy-workflow-item > div > div > span').last().should('contain', BASIC_WORKFLOW_NAME)
   })
 
   it('Edit the newly created workflow by changing his name', () => {
     cy.get('.cy-workflow-item .cy-actions-btn').last().click()
-    cy.get('ul[role=listbox] #cy-edit-item').click()
+    cy.get('ul[role=menu] #cy-edit-item').click()
     cy.get('#cy-confirm-edit-workflow-tf').clear().type(BASIC_WORKFLOW.replace(BASIC_WORKFLOW_NAME, BASIC_WORKFLOW_NAME + ABC_SUFFIX))
     cy.get('#cy-confirm-save-btn').click()
     cy.get('.notification-container .notification-message h4').should('contain', 'Success')
@@ -69,12 +68,12 @@ describe('Test workflow CRUD actions', () => {
 
   it('There should be one listed workflow with the new name we just edited', () => {
     cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5') // 4 + 1
-    cy.get('.cy-workflow-item > div > div > div').last().should('contain', BASIC_WORKFLOW_NAME + ABC_SUFFIX)
+    cy.get('.cy-workflow-item > div > div > span').last().should('contain', BASIC_WORKFLOW_NAME + ABC_SUFFIX)
   })
 
   it('Remove the workflow', () => {
-    cy.get('.cy-workflow-item .cy-actions-btn').last().click()
-    cy.get('ul[role=listbox] #cy-delete-item').click()
+    // cy.get('.cy-workflow-item .cy-actions-btn').last().click()
+    cy.get('ul[role=menu] #cy-delete-item').click()
     cy.get('#cy-confirm-ok-btn').click()
     cy.get('.notification-container .notification-message h4').should('contain', 'Success')
     cy.get('.notification-container .notification-success').first().click()

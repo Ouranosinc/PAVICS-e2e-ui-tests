@@ -71,13 +71,13 @@ Cypress.Commands.add('selectRegionByCoordinates', (x, y) => {
 })
 
 // Alias actionsBtnAlias must be defined before the call
-Cypress.Commands.add('triggerVisualize', (actionsBtnAlias, visualizeItemId, actionsLength = 3) => {
+Cypress.Commands.add('triggerVisualize', (actionsBtnAlias, visualizeItemId, actionsLength = 4) => {
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetCapabilities.*$/i), method: 'get' }).as('ncwms2GetCapabilities')
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMetadata.*$/i), method: 'get' }).as('ncwms2GetMetadata')
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMap.*$/i), method: 'get' }).as('ncwms2GetMap')
-  cy.get(actionsBtnAlias).click()
-  cy.get('ul[role=listbox]').children().should('to.have.lengthOf', actionsLength) // X actions attended
-  cy.get(`ul[role=listbox] #${visualizeItemId}`).click() // Trigger action
+  cy.get(actionsBtnAlias).click({force:true})
+  cy.get('ul[role=menu]').children().should('to.have.lengthOf', actionsLength) // X actions attended
+  cy.get(`ul[role=menu] #${visualizeItemId}`).click() // Trigger action
   cy.wait('@ncwms2GetCapabilities').then((xhr) => {
     cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
     cy.wrap(xhr.status).should('eq', 200)
@@ -108,8 +108,8 @@ Cypress.Commands.add('visualizeFirstSingleFileDataset', (
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMetadata.*$/i), method: 'get' }).as('ncwms2GetMetadata')
   cy.route({ url: new RegExp(/.*\/ncWMS2\/wms?.*REQUEST=GetMap.*$/i), method: 'get' }).as('ncwms2GetMap')
   cy.get('.cy-project-dataset-item .cy-actions-btn').first().click()
-  cy.get('ul[role=listbox]').children().should('to.have.lengthOf', 3) // 3 actions attended
-  cy.get('ul[role=listbox] #cy-visualize-item').click() // Trigger action
+  cy.get('ul[role=menu]').children().should('to.have.lengthOf', 4) // 4 actions attended
+  cy.get('ul[role=menu] #cy-visualize-item').click() // Trigger action
   cy.wait('@ncwms2GetCapabilities').then((xhr) => {
     cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
     cy.wrap(xhr.status).should('eq', getCapabilitiesAttendedCode)
@@ -133,23 +133,33 @@ Cypress.Commands.add('visualizeFirstSingleFileDataset', (
 })
 
 Cypress.Commands.add('togglePointInfoWidget', () => {
-  cy.get('#cy-menu-point-info-toggle2').click()
+  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-menu-point-info-toggle-btn').click()
+  cy.get('#cy-speed-dial-menu-btn').click()
 })
 
 Cypress.Commands.add('toggleTimeSerieWidget', () => {
-  cy.get('#cy-menu-time-series-toggle a svg').click()
+  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-menu-time-series-toggle-btn').click()
+  cy.get('#cy-speed-dial-menu-btn').click()
 })
 
 Cypress.Commands.add('toggleLayerSwitcherWidget', () => {
-  cy.get('#cy-menu-layer-switcher-toggle a svg').click()
+  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-menu-layer-switcher-toggle-btn').click()
+  cy.get('#cy-speed-dial-menu-btn').click()
 })
 
 Cypress.Commands.add('toggleTimeSliderWidget', () => {
-  cy.get('#cy-menu-temporal-slider-toggle a svg').click()
+  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-menu-temporal-slider-toggle-btn').click()
+  cy.get('#cy-speed-dial-menu-btn').click()
 })
 
 Cypress.Commands.add('toggleMapControlsWidget', () => {
-  cy.get('#cy-menu-map-controls-toggle a svg').click()
+  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-menu-map-controls-toggle-btn').click()
+  cy.get('#cy-speed-dial-menu-btn').click()
 })
 
   //Click
