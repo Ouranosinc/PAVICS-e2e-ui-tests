@@ -27,16 +27,17 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
 		cy.init()
 		cy.login()
     cy.createSelectTestProject()
-    cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
-
-    // Development temporary actions so we can start futur testing with a completed workflow
-    //cy.selectProjectByProjectId(517) // Trigger the test once then note projectId
-    //cy.get('#cy-project-management').click()
-    //cy.ensureSectionOpen('cy-process-monitoring', PROCESS_MONITORING_TITLE)
   })
   
   it('Validate 4 sample workflows were created for the newly created TEST project', () => {
     // 4 sample workflow auto-created for a new project
+    cy.route({method: 'get', url: new RegExp(/api\/Projects\/.*\/workflows/i)}).as('getWorkflows')
+    cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
+    // Development temporary actions so we can start futur testing with a completed workflow
+    //cy.selectProjectByProjectId(517) // Trigger the test once then note projectId
+    //cy.get('#cy-project-management').click()
+    //cy.ensureSectionOpen('cy-process-monitoring', PROCESS_MONITORING_TITLE)
+    cy.wait('@getWorkflows')
     cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '4')
   })
   
@@ -45,12 +46,12 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
 		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
 		cy.get('.notification-container .notification-success').click()
 		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5') // 4 + 1
-		cy.get('.cy-workflow-item > div > div > div').last().should('contain', BASIC_WORKFLOW_NAME)
+		cy.get('.cy-workflow-item > div > div > span').last().should('contain', BASIC_WORKFLOW_NAME)
 	})
 
 	it('Select created subset workflow (last) and trigger action "Configure & Run"', () => {
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
-		cy.get('div[role=menu] #cy-configure-run-item').click()
+		cy.get('ul[role=menu] #cy-configure-run-item').click()
 		cy.get('#cy-configure-run-step').children().last().should('contain', BASIC_WORKFLOW_NAME)
 		cy.wait(7000) // Parsing workflow time is actually hard to predict
 	})
@@ -93,10 +94,10 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
       .should('contain', STATUS_PENDING)
   })
   
-  it('After waiting 90 seconds, "workflow should now have status COMPLETED"', () => {
+  it('After waiting 120 seconds, "workflow should now have status COMPLETED"', () => {
     cy.route({ method: 'get', url: "/phoenix/jobs?**" }).as('phoenixJobs')
     // TODO: We should intercept and parse results until it has completed !
-    cy.wait(90000)
+    cy.wait(120000)
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-0 .cy-monitoring-status')
       .first()
       .should('contain', STATUS_COMPLETED)
@@ -111,14 +112,14 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
   })
   
   it('Opening "Subsetting task should show one output file"', () => {
-    cy.get('.cy-monitoring-list-item.cy-monitoring-level-1 > div > div > div').last().should('contain', SUBSETTING_TASK_NAME + ':')
+    cy.get('.cy-monitoring-list-item.cy-monitoring-level-1 > div > span').last().should('contain', SUBSETTING_TASK_NAME + ':')
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-1').last().click()
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-2').should('to.have.lengthOf', 1)
   })
   
   it('Trigger action "Persist" on NetCDF Subsetting output', () => {
-    cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-actions-btn').click()
-    cy.get('div[role=menu] #cy-persist-item').click()
+    cy.get('.cy-monitoring-sec-actions.cy-monitoring-level-2 .cy-actions-btn').click({force:true})
+    cy.get('ul[role=menu] #cy-persist-item').click()
     cy.get('#cy-advanced-toggle').click()
     cy.get('input#cy-workspace-path-tf').invoke('val').as('persistPath')
     cy.get('@persistPath').then(path => {
@@ -133,8 +134,8 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
   
   it('Trigger action "Download" on NetCDF Subsetting output', () => {
     // Workaround: Figuring out resource url with the persist dialog
-    cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-actions-btn').click()
-    cy.get('div[role=menu] #cy-persist-item').click()
+    cy.get('.cy-monitoring-sec-actions.cy-monitoring-level-2 .cy-actions-btn').click({force:true})
+    cy.get('ul[role=menu] #cy-persist-item').click()
     cy.get('#cy-advanced-toggle').click()
     cy.get('input#cy-resource-link-tf').invoke('val').as('link')
     cy.get('@link').then(link => {
@@ -143,15 +144,15 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
       // Now we can trigger Download
       cy.window().then((window) => {
         cy.stub(window, 'open').as('windowOpen')
-        cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-actions-btn').click()
-        cy.get('div[role=menu] #cy-download-item').click()
+        cy.get('.cy-monitoring-sec-actions.cy-monitoring-level-2 .cy-actions-btn').click()
+        cy.get('ul[role=menu] #cy-download-item').click()
         cy.get('@windowOpen').should('be.calledWith', link)
       })
     })
   })
 
   it('Trigger action "Visualize" on NetCDF Subsetting output', () => {
-    cy.get('.cy-monitoring-list-item.cy-monitoring-level-2 .cy-actions-btn').as('actionsBtn')
+    cy.get('.cy-monitoring-sec-actions.cy-monitoring-level-2 .cy-actions-btn').as('actionsBtn')
     cy.triggerVisualize('@actionsBtn', 'cy-visualize-item', 4)
   })
   
@@ -159,7 +160,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
     // cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
     cy.get('#cy-data-processing').click()
     cy.get('.cy-workflow-item .cy-actions-btn').eq(1).click() // Select item #2
-    cy.get('div[role=menu] #cy-configure-run-item').click()
+    cy.get('ul[role=menu] #cy-configure-run-item').click()
     cy.wait(7000) // Parsing workflow time is actually hard to predict
     // TODO: Could be done better with multiple route/wait
   })
@@ -194,10 +195,10 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
       .should('contain', STATUS_PENDING)
   })
   
-  it('After waiting 90 seconds, "first job should now have status COMPLETED"', () => {
+  it('After waiting120 seconds, "first job should now have status COMPLETED"', () => {
     cy.route({ method: 'get', url: "/phoenix/jobs?**" }).as('phoenixJobs')
     // TODO: We should intercept and parse results until it has completed !
-    cy.wait(90000)
+    cy.wait(120000)
     cy.get('.cy-monitoring-list-item.cy-monitoring-level-0')
       .first()
       .get('.cy-monitoring-status')

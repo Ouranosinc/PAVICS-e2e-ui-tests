@@ -16,7 +16,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
   })
 
   it('Open all 5 visualize widgets', () => {
-    // cy.togglePointInfoWidget() // FIXME: Not selectable at the moment because of panzoom element
+    cy.togglePointInfoWidget()
     cy.toggleTimeSerieWidget()
     cy.toggleLayerSwitcherWidget()
     cy.toggleTimeSliderWidget()

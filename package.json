@@ -10,12 +10,13 @@
   "scripts": {
     "cypress": "cypress open",
     "test": "cypress run --record",
-    "test:project-basic-crud-actions": "cypress run --spec cypress/integration/project-basic-crud-actions.spec.js --record"
+    "test:permissions-ncwms": "cypress run --spec cypress/integration/permissions-visualization-ncwms.spec.js",
+    "test:project-basic-crud-actions": "cypress run --spec cypress/integration/project-basic-crud-actions.spec.js"
   },
   "author": "Renaud Hébert-Legault",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^2.1.0"
+    "cypress": "^3.0.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1"
