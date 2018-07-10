@@ -1,5 +1,5 @@
 
-Cypress.Commands.add('login', (username = Cypress.env('MAGPIE_USERNAME'), password = Cypress.env('MAGPIE_PASSWORD')) => {
+Cypress.Commands.add('login', (username = Cypress.env('MAGPIE_ADMIN_USERNAME'), password = Cypress.env('MAGPIE_ADMIN_PASSWORD')) => {
   cy.route('/login').as('login')
   cy.route('/session').as('session')
 

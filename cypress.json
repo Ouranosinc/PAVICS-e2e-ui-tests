@@ -4,7 +4,10 @@
   "viewportWidth": 1800,
   "viewportHeight": 1200,
   "env": {
-    "MAGPIE_USERNAME": "cypress",
-    "MAGPIE_PASSWORD": "cypress"
+    "MAGPIE_ADMIN_USERNAME": "cypress",
+    "MAGPIE_ADMIN_PASSWORD": "cypress",
+    "MAGPIE_USER_USERNAME": "cypress2",
+    "MAGPIE_USER_PASSWORD": "cypress2",
+    "MAGPIE_PATH": "/magpie"
   }
 }

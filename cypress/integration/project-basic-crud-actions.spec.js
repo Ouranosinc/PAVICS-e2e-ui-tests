@@ -16,11 +16,12 @@ describe('Test project basic CRUD actions', () => {
   })
 
   it('Create new project', () => {
+    cy.route({ method: 'post', url: new RegExp(/api\/Projects/i) }).as('createProject')
     cy.get('#cy-create-project-tab').click()
     cy.get('input#cy-project-name-tf').clear().type(constants.PROJECT_NAME + CURRENT_DATE_TIME)
     cy.get('textarea#cy-project-description-tf').clear().type(constants.PROJECT_DESCRIPTION)
     cy.get('#cy-create-project-btn').click()
-  
+    cy.wait('@createProject')
     cy.get('.notification-container .notification-message h4').should('contain', 'Success')
     cy.get('.notification-container .notification-success').click()
   })

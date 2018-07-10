@@ -5,14 +5,14 @@ import * as constants from './../constants';
 // Now includes a wait for pavicsearch to complete
 Cypress.Commands.add('selectFacet', (key, value) => {
   cy.route('/wps/pavicsearch?**').as('pavicsSearch')
-  cy.get(`#cy-search-facet-${key} button`).click()
+  cy.get(`#cy-search-facet-${key}[role=button]`).click()
   cy.get(`#cy-search-facet-${key}-${value} input`).check({ force: true })
-  cy.get(`#cy-search-facet-${key} button`).click() // TODO a backdrop click outside should also work eventually
+  cy.get(`#cy-search-facet-${key}[role=button]`).click() // TODO a backdrop click outside should also work eventually
   cy.wait('@pavicsSearch')
 })
 
 Cypress.Commands.add('addAdditionnalCriterias', (key) => {
-  cy.get('#cy-add-criteria-sf').click()
+  cy.get('#cy-add-criteria-select').click()
   cy.get(`#cy-add-criteria-${key}`).click()
 })
 

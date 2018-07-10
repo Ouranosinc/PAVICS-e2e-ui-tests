@@ -7,6 +7,7 @@ import {
 
 Cypress.Commands.add('createSelectTestProject', () => {
   cy.log("Create TEST Project...")
+  cy.route({ method: 'post', url: new RegExp(/api\/Projects/i) }).as('createProject')
 
   // Open section and tab
   cy.get('#cy-project-management').click()
@@ -15,6 +16,7 @@ Cypress.Commands.add('createSelectTestProject', () => {
   // Create
   cy.get('input#cy-project-name-tf').clear().type(PROJECT_NAME + new Date().toISOString())
   cy.get('#cy-create-project-btn').click()
+  cy.wait('@createProject')
   cy.get('.notification-container .notification-message h4').should('contain', 'Success')
   cy.get('.notification-container .notification-success').click()
 
@@ -35,8 +37,8 @@ Cypress.Commands.add('selectProjectByProjectId', (id) => {
   cy.get('#cy-project-management').click()
   cy.get('#cy-current-project-tab').click()
 
-  cy.get('#cy-project-selector button').click()
-  cy.get(`div[role=menu] [data-cy-item-project-id=${id}]`).click() // Select by id
+  cy.get('#cy-project-selector [role=button]').click()
+  cy.get(`ul[role=listbox] [data-cy-item-project-id=${id}]`).click() // Select by id
 
   cy.get('.notification-container .notification-message h4').should('contain', 'Information')
   cy.get('.notification-container .notification-info').click()
@@ -61,9 +63,9 @@ Cypress.Commands.add('shareProjectWriteToGroup', (groupname) => {
   cy.get('#cy-share-project-tab').click()
 
   // Select group and write permission
-  cy.get('input#cy-share-type-group-rb').check()
-  cy.get('#cy-group-selector button').click()
-  cy.get(`div[role=menu] [data-cy-item-group=${groupname}]`).click()
+  cy.get('input#cy-share-type-group').check()
+  cy.get('#cy-group-select').click()
+  cy.get(`ul[role=listbox] [data-cy-item-group=${groupname}]`).click()
   cy.get('input#cy-write-permission-cb').check()
 
   cy.get('#cy-share-project-btn').click()
@@ -95,11 +97,11 @@ Cypress.Commands.add('removeCurrentProject', () => {
 })
 
 Cypress.Commands.add('removeCypressTestProjects', () => {
-  cy.get('#cy-project-selector button').click()
+  cy.get('#cy-project-selector [role=button]').click()
 
   // Looping all dropdown elements but stopping at first matching item name
   let found = false
-  cy.get('div[role=menu]').each(($el, index, $list) => {
+  cy.get('ul[role=listbox]').each(($el, index, $list) => {
     // Make sure selected project has cypress project name definition
     cy.route({ method: 'delete', url: new RegExp(/api\/Projects\/.*/i) }).as('deleteProject')
     cy.log(`Looping '${$el.children().first().children().first().children().first().text()}'`)

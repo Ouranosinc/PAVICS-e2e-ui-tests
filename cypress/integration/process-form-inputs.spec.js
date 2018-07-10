@@ -34,12 +34,12 @@ describe('Test process form inputs allowed values', () => {
     cy.get('.notification-container .notification-message h4').should('contain', 'Success');
     cy.get('.notification-container .notification-success').click();
     cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5'); // 4 + 1
-    cy.get('.cy-workflow-item > div > div > div').last().should('contain', WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME)
+    cy.get('.cy-workflow-item > div > div > span').last().should('contain', WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME)
   });
 
   it('Select allowed values workflow and trigger action "Configure & Run"', () => {
     cy.get('.cy-workflow-item .cy-actions-btn').last().click();
-    cy.get('div[role=menu] #cy-configure-run-item').click();
+    cy.get('ul[role=menu] #cy-configure-run-item').click();
     cy.get('#cy-configure-run-step').children().last().should('contain', WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME);
     cy.wait(4000);
   });

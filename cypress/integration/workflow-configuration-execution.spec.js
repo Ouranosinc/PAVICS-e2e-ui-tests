@@ -37,12 +37,12 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
 		cy.get('.notification-container .notification-success').click()
 		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '6') // 4 + 1 + 1
-		cy.get('.cy-workflow-item > div > div > div').last().should('contain', SUBSET_WORKFLOW_NAME)
+		cy.get('.cy-workflow-item > div > div > span').last().should('contain', SUBSET_WORKFLOW_NAME)
 	})
 
 	it('Select created subset workflow (last) and trigger action "Configure & Run"', () => {
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
-		cy.get('div[role=menu] #cy-configure-run-item').click()
+		cy.get('ul[role=menu] #cy-configure-run-item').click()
 		cy.get('#cy-configure-run-step').children().last().should('contain', SUBSET_WORKFLOW_NAME)
 		cy.wait(7000) // Parsing workflow time is actually hard to predict
 	})
@@ -85,7 +85,7 @@ describe('Test workflow configuration and execution', () => {
 	it('Trying to "Configure & Run" a workflow containing an invalid provider should prompt a warning at parsing phase', () => {
 		cy.get('#cy-step-back-btn').click()
 		cy.get('.cy-workflow-item .cy-actions-btn').eq(4).click()
-		cy.get('div[role=menu] #cy-configure-run-item').click()
+		cy.get('ul[role=menu] #cy-configure-run-item').click()
 		cy.get('.notification-container .notification-message h4').should('contain', 'Warning')
 		cy.get('.notification-container .notification-warning').click()
 		// Stalled in mode 'Parsing Workflow'
@@ -100,8 +100,8 @@ describe('Test workflow configuration and execution', () => {
 	})
 
 	it('"Add CMIP5 dataset to current project", Visualize it and click Reset dataset button', () => {
-		cy.addCMIP5DatasetThenVisualize()
-		cy.get('#cy-menu-layer-switcher-toggle a svg').click()
+    cy.addCMIP5DatasetThenVisualize()
+    cy.toggleLayerSwitcherWidget()
 		cy.get('#cy-layerswitcher-datasets-tab').click()
 		cy.get('#cy-reset-dataset-btn').click()
 	})
@@ -109,7 +109,7 @@ describe('Test workflow configuration and execution', () => {
 	it('Select subset workflow (last) and trigger action "Configure & Run"', () => {
 		cy.get('#cy-data-processing').click()
 		cy.get('.cy-workflow-item .cy-actions-btn').last().click()
-		cy.get('div[role=menu] #cy-configure-run-item').click()
+		cy.get('ul[role=menu] #cy-configure-run-item').click()
 		cy.wait(7000)  // Parsing workflow time is actually hard to predict
 	})
 
@@ -137,7 +137,7 @@ describe('Test workflow configuration and execution', () => {
 	})
 
 	it('Selecting a region on the map should "automatically fill subset_WFS.featureids input"', () => {
-		cy.get('#cy-menu-map-controls-toggle a svg').click()
+    cy.toggleMapControlsWidget()
 		cy.get('#cy-region-selection-btn').click()
 
 		cy.selectRegionByCoordinates(-200, 100)

@@ -43,15 +43,15 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
   it('Select current project newly added search criterias and trigger action "Restore results"', () => {
     cy.get('.cy-project-search-criterias-item .cy-actions-btn').first().click()
     // Should we really valid there will be 3 action buttons
-    cy.get('div[role=menu]').children().should('to.have.lengthOf', 3) // 3 actions
-    cy.get('div[role=menu] #cy-restore-item').click()
+    cy.get('ul[role=menu]').children().should('to.have.lengthOf', 3) // 3 actions
+    cy.get('ul[role=menu] #cy-restore-item').click()
 
     cy.get('.notification-container .notification-message h4').should('contain', 'Warning')
     cy.get('.notification-container .notification-warning').click()
 
     // Should be redirected to Search Datasets setion
     cy.get('#cy-sectional-content').should('be.visible')
-    cy.get('#cy-sectional-content h1').should('contain', constants.SEARCH_DATASETS_TITLE)
+    cy.get('#cy-sectional-content h2').should('contain', constants.SEARCH_DATASETS_TITLE)
   })
 
   it('Validate restored results match', () => {
@@ -67,12 +67,12 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
     cy.route('/wps/pavicsearch?**').as('pavicsSearch')
     cy.get('#cy-project-management').click()
     cy.get('.cy-project-search-criterias-item .cy-actions-btn').first().click()
-    cy.get('div[role=menu] #cy-relaunch-item').click()
+    cy.get('ul[role=menu] #cy-relaunch-item').click()
     cy.wait('@pavicsSearch')
 
     // Should be redirected to Search Datasets setion
     cy.get('#cy-sectional-content').should('be.visible')
-    cy.get('#cy-sectional-content h1').should('contain', constants.SEARCH_DATASETS_TITLE)
+    cy.get('#cy-sectional-content h2').should('contain', constants.SEARCH_DATASETS_TITLE)
   })
 
   it('Validate relaunch results match', () => {
@@ -84,7 +84,7 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
     cy.get('#cy-project-management').click()
 
     cy.get('.cy-project-search-criterias-item .cy-actions-btn').first().click()
-    cy.get('div[role=menu] #cy-remove-item').click()
+    cy.get('ul[role=menu] #cy-remove-item').click()
 
     cy.get('.notification-container .notification-message h4').should('contain', 'Success')
     cy.get('.notification-container .notification-success').click()
