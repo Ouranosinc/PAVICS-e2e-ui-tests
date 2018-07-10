@@ -72,7 +72,7 @@ describe('Test workflow CRUD actions', () => {
   })
 
   it('Remove the workflow', () => {
-    // cy.get('.cy-workflow-item .cy-actions-btn').last().click()
+    cy.get('.cy-workflow-item .cy-actions-btn').last().click()
     cy.get('ul[role=menu] #cy-delete-item').click()
     cy.get('#cy-confirm-ok-btn').click()
     cy.get('.notification-container .notification-message h4').should('contain', 'Success')
