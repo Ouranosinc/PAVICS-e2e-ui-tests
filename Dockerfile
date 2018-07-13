@@ -1,6 +1,6 @@
 FROM cypress/base
 MAINTAINER Renaud Hébert-Legault <renaud.hebert-legault@crim.ca>
-LABEL Description="PAVICS Platform E2E tests - Based on Node.js and Cypress.IO" Vendor="CRIM" Version="0.1.0"
+LABEL Description="PAVICS Platform E2E tests - Based on Node.js and Cypress.IO" Vendor="CRIM" Version="0.1.2"
 WORKDIR /tests
 
 ENV npm_config_loglevel=warn
