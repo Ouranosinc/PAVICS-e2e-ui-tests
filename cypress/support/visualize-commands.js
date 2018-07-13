@@ -133,31 +133,31 @@ Cypress.Commands.add('visualizeFirstSingleFileDataset', (
 })
 
 Cypress.Commands.add('togglePointInfoWidget', () => {
-  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-speed-dial-menu-btn').click()
   cy.get('#cy-menu-point-info-toggle-btn').click()
   cy.get('#cy-speed-dial-menu-btn').click()
 })
 
 Cypress.Commands.add('toggleTimeSerieWidget', () => {
-  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-speed-dial-menu-btn').click()
   cy.get('#cy-menu-time-series-toggle-btn').click()
   cy.get('#cy-speed-dial-menu-btn').click()
 })
 
 Cypress.Commands.add('toggleLayerSwitcherWidget', () => {
-  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-speed-dial-menu-btn').click()
   cy.get('#cy-menu-layer-switcher-toggle-btn').click()
   cy.get('#cy-speed-dial-menu-btn').click()
 })
 
 Cypress.Commands.add('toggleTimeSliderWidget', () => {
-  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-speed-dial-menu-btn').click()
   cy.get('#cy-menu-temporal-slider-toggle-btn').click()
   cy.get('#cy-speed-dial-menu-btn').click()
 })
 
 Cypress.Commands.add('toggleMapControlsWidget', () => {
-  cy.get('#cy-speed-dial-menu-btn').trigger('mouseover')
+  cy.get('#cy-speed-dial-menu-btn').click()
   cy.get('#cy-menu-map-controls-toggle-btn').click()
   cy.get('#cy-speed-dial-menu-btn').click()
 })
