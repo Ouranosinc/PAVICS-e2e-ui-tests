@@ -16,26 +16,28 @@ describe('Test search datasets section', () => {
     cy.createSelectTestProject()
   })
 
-  it('Some facets should be loaded if logged', () => {
+  it('No datasets should be loaded when none facet has been selected', () => {
     cy.route('/wps/pavicsearch?**').as('pavicsSearch')
     cy.ensureSectionOpen('cy-search-datasets', SEARCH_DATASETS_TITLE)
     cy.wait('@pavicsSearch')
     cy.get('#cy-search-facets')
     cy.get('#cy-search-no-results-sh').should('contain', NO_RESULTS_FOUND_LABEL)
+  })
 
-    // Test project SelectField
-    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 3) // List invisible
-    cy.get('#cy-search-facet-project[role=button]').click()
-    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 3+1) // List is now visible
-    // Minimum of 3 projects shown
-    cy.get('#cy-search-facet-project-list ul').children().should('to.have.length.above', 3) // TODO: Could depend on thredds permissions
-    cy.get('#cy-search-facet-project[role=button]').click() // TODO a backdrop click outside should also work eventually
-    cy.get('#cy-search-facet-project-list > div').children().should('to.have.lengthOf', 3) // List invisible
+  it('Minimally 3 project facets should be loaded', () => {
+    cy.testFacetKeyContainsValues('project', 3)
+  })
 
-    // TODO: could try same tests for all 4 SelectFields
-    cy.get('#cy-search-facet-frequency[role=button]')
-    cy.get('#cy-search-facet-model[role=button]')
-    cy.get('#cy-search-facet-variable[role=button]')
+  it('Minimally 3 frequency facets should be loaded', () => {
+    cy.testFacetKeyContainsValues('frequency', 3)
+  })
+
+  it('Minimally 3 model facets should be loaded', () => {
+    cy.testFacetKeyContainsValues('model', 3)
+  })
+
+  it('Minimally 3 variable facets should be loaded', () => {
+    cy.testFacetKeyContainsValues('project', 3)
   })
 
   it('Select project:CMIP5, variable:pr facets', () => {

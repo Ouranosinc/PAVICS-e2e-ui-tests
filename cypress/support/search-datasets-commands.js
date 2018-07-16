@@ -7,7 +7,7 @@ Cypress.Commands.add('selectFacet', (key, value) => {
   cy.route('/wps/pavicsearch?**').as('pavicsSearch')
   cy.get(`#cy-search-facet-${key}[role=button]`).click()
   cy.get(`#cy-search-facet-${key}-${value} input`).check({ force: true })
-  cy.get(`#cy-search-facet-${key}[role=button]`).click() // TODO a backdrop click outside should also work eventually
+  // cy.get(`#cy-search-facet-${key}[role=button]`).click()
   cy.wait('@pavicsSearch')
 })
 
@@ -43,6 +43,14 @@ Cypress.Commands.add('selectCMIP5RCP45PRDayFacets', () => {
   // TODO: Dataset should contains two files
 })
 
+Cypress.Commands.add('testFacetKeyContainsValues', (key, minLength) => {
+  cy.get(`#cy-search-facet-${key}-list > div`).children().should('to.have.lengthOf', 3) // List should be invisible
+  cy.get(`#cy-search-facet-${key}[role=button]`).click()
+  cy.get(`#cy-search-facet-${key}-list > div`).children().should('to.have.lengthOf', 3+1) // List is now visible 
+  cy.get(`#cy-search-facet-${key}-list ul`).children().should('to.have.length.above', minLength) // Minimum of minLength values shown
+  cy.get(`#cy-search-facet-${key}[role=button]`).click() // A backdrop click outside should also work now
+  cy.get(`#cy-search-facet-${key}-list > div`).children().should('to.have.lengthOf', 3) // List should be invisible
+})
 
 // Search datasets section should be opened as well as some facets loaded
 Cypress.Commands.add('selectOuranosPCPFacets', () => {

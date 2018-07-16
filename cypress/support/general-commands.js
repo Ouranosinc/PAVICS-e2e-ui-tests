@@ -31,7 +31,7 @@ Cypress.Commands.add('init', () => {
 
 Cypress.Commands.add('initBeforeEach', (seedData = 'fixture:todos') => {
   // Server should be started before every test
-  cy.server({ stub: false })
+  cy.server()
 })
 
 
