@@ -12,9 +12,7 @@ Cypress.Commands.add('login', (username = Cypress.env('MAGPIE_ADMIN_USERNAME'), 
 
   // cy.wait('@login') FIXME: Migth actually not be called
   cy.wait('@session')
-
-  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-  cy.get('.notification-container .notification-success').click()
+  cy.shouldNotifySuccess()
 
   cy.wait(3000)
 
@@ -34,8 +32,7 @@ Cypress.Commands.add('logout', () => {
   cy.get('#cy-account-management').click()
   cy.get('#cy-logout-btn').click()
   cy.wait('@logout').then(() => {
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').click()
+    cy.shouldNotifySuccess()
     cy.getCookie('auth_tkt').should('not.exist')
     cy.get('#cy-account-management').click()
   })

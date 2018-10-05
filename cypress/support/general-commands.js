@@ -64,3 +64,9 @@ Cypress.Commands.add('ensureSectionClose', (sectionId, title) => {
   // Content shouldn't be visible anymore
   cy.get('#cy-sectional-content').should('not.be.visible')
 })
+
+Cypress.Commands.add('shouldNotifySuccess', () => {
+  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
+  cy.wait(200) // Better handling of notification animation which make element partially visible and generate an error
+  cy.get('.notification-container .notification-success').first().click()
+})

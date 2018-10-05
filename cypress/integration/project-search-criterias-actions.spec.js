@@ -85,9 +85,7 @@ describe('Test project search criterias actions (Remove/Relaunch/Restore)', () =
 
     cy.get('.cy-project-search-criterias-item .cy-actions-btn').first().click()
     cy.get('ul[role=menu] #cy-remove-item').click()
-
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').click()
+    cy.shouldNotifySuccess()
   })
 
   it('There should be no more search criterias in the current project', () => {

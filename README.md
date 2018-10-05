@@ -37,12 +37,12 @@ $ npm run cypress               # Launch the Cypress application
 - When creating cypress ids/classes, you should also used suffixes to identify your element types: Examples: '-btn' for buttons, '-item' for ListItem, '-tf' for TextField or '-sf' for SelectField.
 - Use prefixed 'data-cy-' attributes when you need dynamic data to be the selected element
 
-#List of reusable commands (support/commands.js):
+#List of reusable commands (support/*-commands.js):
 ```javascript
 cy.init() # Call it before every test, will cy.visit() main page then do some basic stuff like removing alerts and minimizing panels
 cy.createTestProject() # Should be called before every test, everything cypress does will be included in this project
-cy.removeCurrentProject() # Should be called after every test to ensure cypress doesn't polute real database
-cy.log() # Will log you in the platform
+cy.removeCurrentProject() # Should be called after every test to ensure cypress doesnt polute real database
+cy.login() # Will log you in the platform
 cy.logout() # Will log you out
 ```
 

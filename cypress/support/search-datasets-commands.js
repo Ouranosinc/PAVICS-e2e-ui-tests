@@ -72,8 +72,7 @@ Cypress.Commands.add('resetFacets', (key, value) => {
 Cypress.Commands.add('saveSearchCriterias', (name) => {
   cy.get('#cy-criterias-name-tf').clear().type(name)
   cy.get('#cy-save-criterias-btn').click()
-  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-  cy.get('.notification-container .notification-success').click()
+  cy.shouldNotifySuccess()
 })
 
 Cypress.Commands.add('addFirstDatasetToProject', () => {
@@ -81,6 +80,5 @@ Cypress.Commands.add('addFirstDatasetToProject', () => {
   cy.get('.cy-dataset-result-item input[type=checkbox]').first().check()
   cy.get('#cy-add-datasets-btn').click()
   cy.wait('@addDataset')
-  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-  cy.get('.notification-container .notification-success').click()
+  cy.shouldNotifySuccess()
 })
