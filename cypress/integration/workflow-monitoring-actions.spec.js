@@ -43,8 +43,7 @@ describe('Test workflow monitoring actions with a single netcdf output', () => {
   
   it('Create a basic workflow', () => {
 		cy.createWorkflow(BASIC_WORKFLOW)
-		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-		cy.get('.notification-container .notification-success').click()
+		cy.shouldNotifySuccess()
 		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5') // 4 + 1
 		cy.get('.cy-workflow-item > div > div > span').last().should('contain', BASIC_WORKFLOW_NAME)
 	})

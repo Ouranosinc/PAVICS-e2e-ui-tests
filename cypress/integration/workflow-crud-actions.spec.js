@@ -48,8 +48,7 @@ describe('Test workflow CRUD actions', () => {
 
   it('Create a basic workflow should return a success', () => {
     cy.createWorkflow(BASIC_WORKFLOW)
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').click()
+    cy.shouldNotifySuccess()
   })
 
   it('There should be one listed workflow with the name we specified', () => {
@@ -75,8 +74,7 @@ describe('Test workflow CRUD actions', () => {
     cy.get('.cy-workflow-item .cy-actions-btn').last().click()
     cy.get('ul[role=menu] #cy-delete-item').click()
     cy.get('#cy-confirm-ok-btn').click()
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').first().click()
+    cy.shouldNotifySuccess()
   })
 
   it('Scientific Workflow list should contain only 4 sample again', () => {

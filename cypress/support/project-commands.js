@@ -17,8 +17,7 @@ Cypress.Commands.add('createSelectTestProject', () => {
   cy.get('input#cy-project-name-tf').clear().type(PROJECT_NAME + new Date().toISOString())
   cy.get('#cy-create-project-btn').click()
   cy.wait('@createProject')
-  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-  cy.get('.notification-container .notification-success').click()
+  cy.shouldNotifySuccess()
 
   // Project is now auto-selected
   cy.get('.notification-container .notification-message h4').should('contain', 'Information')
@@ -52,9 +51,7 @@ Cypress.Commands.add('shareProjectToUser', (username) => {
   cy.get('#cy-share-project-btn').click()
   cy.get('#cy-confirm-ok-btn').click()
   cy.wait('@shareProjectToUser')
-  cy.wait(1000)
-  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-  cy.get('.notification-container .notification-success').click()
+  cy.shouldNotifySuccess()
 })
 
 Cypress.Commands.add('shareProjectWriteToGroup', (groupname) => {
@@ -71,9 +68,7 @@ Cypress.Commands.add('shareProjectWriteToGroup', (groupname) => {
   cy.get('#cy-share-project-btn').click()
   cy.get('#cy-confirm-ok-btn').click()
   cy.wait('@shareProjectToGroup')
-  cy.wait(1000)
-  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-  cy.get('.notification-container .notification-success').click()
+  cy.shouldNotifySuccess()
 })
 
 Cypress.Commands.add('removeProjectByProjectId', (id) => {
@@ -91,8 +86,7 @@ Cypress.Commands.add('removeCurrentProject', () => {
   cy.get('#cy-confirm-ok-btn').click()
 
   cy.wait('@deleteProject')
-  cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-  cy.get('.notification-container .notification-success').click()
+  cy.shouldNotifySuccess()
   cy.ensureSectionClose('cy-project-management', PROJECT_MANAGEMENT_TITLE)
 })
 
@@ -112,8 +106,7 @@ Cypress.Commands.add('removeCypressTestProjects', () => {
       cy.get('#cy-delete-project-btn').click()
       cy.get('#cy-confirm-ok-btn').click()
       cy.wait('@deleteProject')
-      cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-      cy.get('.notification-container .notification-success').click()
+      cy.shouldNotifySuccess()
       cy.log(`Removed project ${$el.children().first().children().first().children().first().text()}`)
       cy.removeCypressTestProjects()
     }

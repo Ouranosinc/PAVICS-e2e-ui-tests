@@ -22,8 +22,7 @@ describe('Test project basic CRUD actions', () => {
     cy.get('textarea#cy-project-description-tf').clear().type(constants.PROJECT_DESCRIPTION)
     cy.get('#cy-create-project-btn').click()
     cy.wait('@createProject')
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').click()
+    cy.shouldNotifySuccess()
   })
 
   it('New project should be automatically selected', () => {
@@ -38,15 +37,13 @@ describe('Test project basic CRUD actions', () => {
     cy.get('input#cy-project-name-tf').clear().type(constants.PROJECT_NAME + CURRENT_DATE_TIME + constants.ABC_SUFFIX)
     cy.get('textarea#cy-project-description-tf').clear().type(constants.PROJECT_DESCRIPTION + constants.ABC_SUFFIX)
     cy.get('#cy-save-project-btn').click()
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').click()
+    cy.shouldNotifySuccess()
   })
 
   it('Delete created/selected/edited project', () => {
     cy.get('#cy-delete-project-btn').click()
     cy.get('#cy-confirm-ok-btn').click()
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').first().click()
+    cy.shouldNotifySuccess()
   })
 
   it('No project should be selected', () => {

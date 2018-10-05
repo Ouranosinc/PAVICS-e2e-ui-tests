@@ -1,8 +1,8 @@
 import {
 	SUBSET_WORKFLOW,
 	SUBSET_WORKFLOW_NAME,
-  DATA_PROCESSING_TITLE,
-  IDENTIFIER_SUBSET_WFS,
+	DATA_PROCESSING_TITLE,
+	IDENTIFIER_SUBSET_WFS,
 	MISSING_PROVIDER_WORKFLOW,
 	SCIENTIFIC_WORKFLOWS_LABEL,
 	SEARCH_DATASETS_TITLE,
@@ -25,17 +25,15 @@ describe('Test workflow configuration and execution', () => {
 	})
 
 	it('Create a workflow with a missing provider name should be a success', () => {
-    cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '4')
+		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '4')
 		cy.createWorkflow(MISSING_PROVIDER_WORKFLOW)
-		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-		cy.get('.notification-container .notification-success').click()
+		cy.shouldNotifySuccess()
 		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '5') // 4 + 1
 	})
 
 	it('Create a subset workflow should be a success', () => {
 		cy.createWorkflow(SUBSET_WORKFLOW)
-		cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-		cy.get('.notification-container .notification-success').click()
+		cy.shouldNotifySuccess()
 		cy.get('#cy-workflow-list #cy-pagination').should('have.attr', 'data-cy-total').and('eq', '6') // 4 + 1 + 1
 		cy.get('.cy-workflow-item > div > div > span').last().should('contain', SUBSET_WORKFLOW_NAME)
 	})
@@ -90,7 +88,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.get('.notification-container .notification-warning').click()
 		// Stalled in mode 'Parsing Workflow'
 		cy.get('#cy-step-back-btn').click()
-  })
+	})
 
 
 	it('TODO: "Launching a workflow with missing required inputs should trigger a warning"', () => {
@@ -100,8 +98,8 @@ describe('Test workflow configuration and execution', () => {
 	})
 
 	it('"Add CMIP5 dataset to current project", Visualize it and click Reset dataset button', () => {
-    cy.addCMIP5DatasetThenVisualize()
-    cy.toggleLayerSwitcherWidget()
+		cy.addCMIP5DatasetThenVisualize()
+		cy.toggleLayerSwitcherWidget()
 		cy.get('#cy-layerswitcher-datasets-tab').click()
 		cy.get('#cy-reset-dataset-btn').click()
 	})
@@ -126,33 +124,33 @@ describe('Test workflow configuration and execution', () => {
 
 	it('Selecting a region type in the Layer Switcher should "automatically fill subset_WFS.typename input"', () => {
 		cy.window().then((window) => {
-			cy.hasOpenLayersLoadedRegions(window.ol, window.cyCurrentMap, false)
+			cy.hasOpenLayersLoadedRegions(window.cyCurrentMap, false)
 		})
 		cy.selectShapeFileByKey(SHAPEFILE_NAME_NESTATES)
 
 		cy.window().then((window) => {
-			cy.hasOpenLayersLoadedRegions(window.ol, window.cyCurrentMap, true)
+			cy.hasOpenLayersLoadedRegions(window.cyCurrentMap, true)
 		})
 		cy.get('.cy-process-form-field input[name="subset_WFS.typename"]').should('not.have.value', '')
 	})
 
 	it('Selecting a region on the map should "automatically fill subset_WFS.featureids input"', () => {
-    cy.toggleMapControlsWidget()
+		cy.toggleMapControlsWidget()
 		cy.get('#cy-region-selection-btn').click()
 
 		cy.selectRegionByCoordinates(-200, 100)
-    cy.selectRegionByCoordinates(0, 0)
-    cy.wait(2000)
+		cy.selectRegionByCoordinates(0, 0)
+		cy.wait(2000)
 		cy.window().then((window) => {
-			cy.hasOpenLayersSelectedRegion(window.ol, window.cyCurrentMap, 2) // 2 selected region attended
+			cy.hasOpenLayersSelectedRegion(window.cyCurrentMap, 2) // 2 selected region attended
 		})
 		cy.get('.cy-process-form-field input[name="subset_WFS.featureids"]').should('not.have.value', '')
 	})
 
-  it('Test closing tasks', () => {
-			cy.ensureSectionClose('cy-data-processing', DATA_PROCESSING_TITLE)
-			cy.removeCurrentProject()
-			cy.logout()
+	it('Test closing tasks', () => {
+		cy.ensureSectionClose('cy-data-processing', DATA_PROCESSING_TITLE)
+		cy.removeCurrentProject()
+		cy.logout()
 	})
 
 })

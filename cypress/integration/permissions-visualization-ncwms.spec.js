@@ -13,7 +13,7 @@ import {
 let projectId;
 
 describe('Tests of NcWMS visualization in the context of magpie permissions', () => {
-  beforeEach(() => {
+  /*beforeEach(() => {
 		cy.initBeforeEach()
   })
 
@@ -175,7 +175,7 @@ describe('Tests of NcWMS visualization in the context of magpie permissions', ()
  
      // Logout magpie
      cy.logoutMagpie()
-  })
+  })*/
 
 })
 

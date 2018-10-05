@@ -48,6 +48,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
 
   it('There should be two added datasets in the current project', () => {
     cy.get('#cy-project-management').click()
+    cy.wait(5000)
     cy.get('#cy-project-datasets #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "2")
   })
 
@@ -89,8 +90,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
 
     // Manage alert
     cy.wait('@deleteDataset')
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').first().click()
+    cy.shouldNotifySuccess()
 
     // Count there's one less dataset
     cy.get('#cy-project-datasets #cy-pagination').should('have.attr', 'data-cy-total').and('eq', "1")
@@ -144,8 +144,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
 
     // Manage alert
     cy.wait('@updateDataset')
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').first().click()
+    cy.shouldNotifySuccess()
 
     // Count there's now 9 files
     cy.get('.cy-project-dataset-item.cy-project-dataset-level-1').should('to.have.lengthOf', 10 - 1)
@@ -159,8 +158,7 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
 
     // Manage alert
     cy.wait('@deleteDataset')
-    cy.get('.notification-container .notification-message h4').should('contain', 'Success')
-    cy.get('.notification-container .notification-success').first().click()
+    cy.shouldNotifySuccess()
   })
 
   it('Test closing tasks', () => {
