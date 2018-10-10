@@ -26,9 +26,11 @@ describe('Test project basic CRUD actions', () => {
   })
 
   it('New project should be automatically selected', () => {
+    // cy.shouldNotifyInformation() // Avoid shouldNotifyInformation to validate message content
     cy.get('.notification-container .notification-message h4').should('contain', 'Information')
     cy.get('.notification-container .notification-message div')
       .should('contain', `Project '${constants.PROJECT_NAME + CURRENT_DATE_TIME}' has been selected as the current project.`)
+    cy.wait(200)
     cy.get('.notification-container .notification-info').click()
   })
 

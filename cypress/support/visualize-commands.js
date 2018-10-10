@@ -5,7 +5,7 @@ import {
   LAYER_REGIONS_NAME
 } from './../constants';
 
-Cypress.Commands.add('simulateOpenLayersEvent', (ol, map, type, x, y, opt_shiftKey = undefined) => {
+Cypress.Commands.add('simulateOpenLayersEvent', (map, type, x, y, opt_shiftKey = undefined) => {
   var viewport = map.getViewport();
   let position = viewport.getBoundingClientRect();
   cy.log(`left: ${position.left}, top: ${position.top}, width: ${position.width}, height: ${position.height}`)
@@ -79,22 +79,22 @@ Cypress.Commands.add('triggerVisualize', (actionsBtnAlias, visualizeItemId, acti
   cy.get('ul[role=menu]').children().should('to.have.lengthOf', actionsLength) // X actions attended
   cy.get(`ul[role=menu] #${visualizeItemId}`).click() // Trigger action
   cy.wait('@ncwms2GetCapabilities').then((xhr) => {
+    cy.shouldNotifyInformation()
+    
     cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
     cy.wrap(xhr.status).should('eq', 200)
-  })
-  cy.wait('@ncwms2GetMetadata').then((xhr) => {
-    cy.wrap(xhr.response.body.type).should('eq', 'application/json')
-    cy.wrap(xhr.status).should('eq', 200)
-  })
-  cy.wait('@ncwms2GetMap').then((xhr) => {
-    cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
-    // Error <ServiceExceptionReport> Must provide a value for VERSION attended tho
-    cy.wrap(xhr.status).should('eq', 200)
-  })
-  // cy.get('#cy-sectional-content h2').click() // Close actions menu
 
-  cy.get('.notification-container .notification-message h4').should('contain', 'Information')
-  cy.get('.notification-container .notification-info').click()
+    cy.wait('@ncwms2GetMetadata').then((xhr) => {
+      cy.wrap(xhr.response.body.type).should('eq', 'application/json')
+      cy.wrap(xhr.status).should('eq', 200)
+    })
+    cy.wait('@ncwms2GetMap').then((xhr) => {
+      cy.wrap(xhr.response.body.type).should('eq', 'text/xml')
+      // Error <ServiceExceptionReport> Must provide a value for VERSION attended tho
+      cy.wrap(xhr.status).should('eq', 200)
+    })
+    // cy.get('#cy-sectional-content h2').click() // Close actions menu
+  })
 })
 
 // First dataset must a be a single file dataset

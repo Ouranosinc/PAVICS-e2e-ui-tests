@@ -13,7 +13,7 @@ import {
 let projectId;
 
 describe('Tests of NcWMS visualization in the context of magpie permissions', () => {
-  /*beforeEach(() => {
+  beforeEach(() => {
 		cy.initBeforeEach()
   })
 
@@ -73,10 +73,10 @@ describe('Tests of NcWMS visualization in the context of magpie permissions', ()
 
     // Information alert attended before launching ncwms calls
     cy.get('.notification-container .notification-message h4').should('contain', 'Information')
-    cy.get('.notification-container .notification-info').click()
-
-    // Error alert attended
+    // Error alert attended on GetCapabilities
     cy.get('.notification-container .notification-message h4').should('contain', 'Error')
+    cy.wait(200) // Better handling of notification animation which make element partially visible and generate an error
+    cy.get('.notification-container .notification-info').click()
     cy.get('.notification-container .notification-error').click()
   })
 
@@ -93,8 +93,7 @@ describe('Tests of NcWMS visualization in the context of magpie permissions', ()
 
     // Success attended at this point on GetCapabilities
     cy.visualizeFirstSingleFileDataset(200, 401, 401)
-    cy.get('.notification-container .notification-message h4').should('contain', 'Information')
-    cy.get('.notification-container .notification-info').click()
+    cy.shouldNotifyInformation()
 
     // Three error alerts attended, two GetMetadata and one GetMap
     cy.get('.notification-container .notification-error').should('have.lengthOf', 3)
@@ -120,8 +119,7 @@ describe('Tests of NcWMS visualization in the context of magpie permissions', ()
 
     // Success attended at this point on GetCapabilities
     cy.visualizeFirstSingleFileDataset(200, 401, 401)
-    cy.get('.notification-container .notification-message h4').should('contain', 'Information')
-    cy.get('.notification-container .notification-info').click()
+    cy.shouldNotifyInformation()
 
     // Three error alerts attended, two GetMetadata and one GetMap
     cy.get('.notification-container .notification-error').should('have.lengthOf', 3)
@@ -145,8 +143,7 @@ describe('Tests of NcWMS visualization in the context of magpie permissions', ()
 
     // Success attended at this point
     cy.visualizeFirstSingleFileDataset(200, 200, 200)
-    cy.get('.notification-container .notification-message h4').should('contain', 'Information')
-    cy.get('.notification-container .notification-info').click()
+    cy.shouldNotifyInformation()
   })
 
   it('PAVICS Platform: Remove TEST project', () => {
@@ -175,7 +172,7 @@ describe('Tests of NcWMS visualization in the context of magpie permissions', ()
  
      // Logout magpie
      cy.logoutMagpie()
-  })*/
+  })
 
 })
 

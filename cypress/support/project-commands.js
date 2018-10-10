@@ -20,8 +20,7 @@ Cypress.Commands.add('createSelectTestProject', () => {
   cy.shouldNotifySuccess()
 
   // Project is now auto-selected
-  cy.get('.notification-container .notification-message h4').should('contain', 'Information')
-  cy.get('.notification-container .notification-info').click()
+  cy.shouldNotifyInformation()
 
   // Note created project Id in @testProjectId
   cy.get('#cy-current-project-tab').click()
@@ -35,12 +34,9 @@ Cypress.Commands.add('selectProjectByProjectId', (id) => {
   // Open section and tab
   cy.get('#cy-project-management').click()
   cy.get('#cy-current-project-tab').click()
-
   cy.get('#cy-project-selector [role=button]').click()
   cy.get(`ul[role=listbox] [data-cy-item-project-id=${id}]`).click() // Select by id
-
-  cy.get('.notification-container .notification-message h4').should('contain', 'Information')
-  cy.get('.notification-container .notification-info').click()
+  cy.shouldNotifyInformation()
 })
 
 Cypress.Commands.add('shareProjectToUser', (username) => {

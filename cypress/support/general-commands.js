@@ -9,6 +9,7 @@ Cypress.Commands.add('init', () => {
 
   // Visit main page
   cy.visit('/', {
+    timeout: 60000, // Max 60 seconds for SPA to load
     onBeforeLoad(win) {
       // Cypress doesn't support fetch, using polyfill whatwg-fetch will transform fetch into XHR which are supported by Cypress
       // https://github.com/cypress-io/cypress/issues/95
@@ -69,4 +70,16 @@ Cypress.Commands.add('shouldNotifySuccess', () => {
   cy.get('.notification-container .notification-message h4').should('contain', 'Success')
   cy.wait(200) // Better handling of notification animation which make element partially visible and generate an error
   cy.get('.notification-container .notification-success').first().click()
+})
+
+Cypress.Commands.add('shouldNotifyInformation', () => {
+  cy.get('.notification-container .notification-message h4').should('contain', 'Information')
+  cy.wait(200) // Better handling of notification animation which make element partially visible and generate an error
+  cy.get('.notification-container .notification-info').click()
+})
+
+Cypress.Commands.add('shouldNotifyError', () => {
+  cy.get('.notification-container .notification-message h4').should('contain', 'Error')
+  cy.wait(200) // Better handling of notification animation which make element partially visible and generate an error
+  cy.get('.notification-container .notification-error').click()
 })
