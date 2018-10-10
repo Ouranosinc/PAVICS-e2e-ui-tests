@@ -36,7 +36,7 @@ Cypress.Commands.add('addMagpieUserResourcePermission', (username, service, perm
 
 Cypress.Commands.add('addMagpieUserServiceRootPermission', (username, service, permission) => {
   cy.visit(`${Cypress.env('MAGPIE_PATH')}/ui/users/${username}/${service}`)
-  cy.get(`.current_tab_panel form:first input[value=${permission}]`).check()
+  cy.get(`.current_tab_panel .tree form:first input[value=${permission}]`).check()
 })
 
 Cypress.Commands.add('removeMagpieUserResourcePermission', (username, service, permission, resourceId) => {
@@ -46,7 +46,7 @@ Cypress.Commands.add('removeMagpieUserResourcePermission', (username, service, p
 
 Cypress.Commands.add('removeMagpieUserServiceRootPermission', (username, service, permission) => {
   cy.visit(`${Cypress.env('MAGPIE_PATH')}/ui/users/${username}/${service}`)
-  cy.get(`.current_tab_panel form:first input[value=${permission}]`).uncheck()
+  cy.get(`.current_tab_panel .tree form:first input[value=${permission}]`).uncheck()
 })
 
 Cypress.Commands.add('addMagpieGroupResourcePermission', (groupname, service, permission, resourceId) => {
@@ -56,7 +56,7 @@ Cypress.Commands.add('addMagpieGroupResourcePermission', (groupname, service, pe
 
 Cypress.Commands.add('addMagpieGroupServiceRootPermission', (groupname, service, permission) => {
   cy.visit(`${Cypress.env('MAGPIE_PATH')}/ui/groups/${groupname}/${service}`)
-  cy.get(`.current_tab_panel form:first input[value=${permission}]`).check()
+  cy.get(`.current_tab_panel .tree form:first input[value=${permission}]`).check()
 })
 
 Cypress.Commands.add('removeMagpieGroupResourcePermission', (groupname, service, permission, resourceId) => {
@@ -66,5 +66,5 @@ Cypress.Commands.add('removeMagpieGroupResourcePermission', (groupname, service,
 
 Cypress.Commands.add('removeMagpieGroupServiceRootPermission', (groupname, service, permission) => {
   cy.visit(`${Cypress.env('MAGPIE_PATH')}/ui/groups/${groupname}/${service}`)
-  cy.get(`.current_tab_panel form:first input[value=${permission}]`).uncheck()
+  cy.get(`.current_tab_panel .tree form:first input[value=${permission}]`).uncheck()
 })

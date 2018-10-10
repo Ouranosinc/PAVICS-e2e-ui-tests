@@ -25,7 +25,9 @@ describe('Test process form inputs allowed values', () => {
     cy.init();
     cy.login()
     cy.createSelectTestProject(); // @testProjectId is the current test project id
+    cy.route({method: 'get', url: new RegExp(/api\/Projects\/.*\/workflows/i)}).as('getWorkflows')
     cy.ensureSectionOpen('cy-data-processing', DATA_PROCESSING_TITLE)
+    cy.wait('@getWorkflows')
   });
 
   it('Create a basic workflow', () => {
@@ -37,10 +39,15 @@ describe('Test process form inputs allowed values', () => {
   });
 
   it('Select allowed values workflow and trigger action "Configure & Run"', () => {
+    // TODO: Values are pretty much hardcoded at this point
+    cy.route({method: 'get', url: "/phoenix/processesList?provider=flyingpigeon"}).as('getProviderFlyingpigeon')
+    cy.route({method: 'get', url: "/phoenix/inputs?provider=flyingpigeon&process=subset_countries"}).as('getProcessSubsetCountries')
     cy.get('.cy-workflow-item .cy-actions-btn').last().click();
     cy.get('ul[role=menu] #cy-configure-run-item').click();
-    cy.get('#cy-configure-run-step').children().last().should('contain', WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME);
-    cy.wait(4000);
+    cy.wait('@getProviderFlyingpigeon').then((window) => {
+			cy.wait('@getProcessSubsetCountries')
+      cy.get('#cy-configure-run-step').children().last().should('contain', WORKFLOW_SINGLE_ALLOWED_VALUES_TASK_NAME);
+		})
   });
 
   it('Form inputs should contain exactly one select field', () => {
