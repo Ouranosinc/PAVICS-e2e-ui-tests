@@ -1,7 +1,8 @@
+const MAGPIE_PATH = Cypress.env('MAGPIE_PATH');
 
 Cypress.Commands.add('login', (username = Cypress.env('MAGPIE_ADMIN_USERNAME'), password = Cypress.env('MAGPIE_ADMIN_PASSWORD')) => {
-  cy.route('/magpie/signin').as('login')
-  cy.route('/magpie/session').as('session')
+  cy.route(`${MAGPIE_PATH}/signin`).as('login')
+  cy.route(`${MAGPIE_PATH}/session`).as('session')
 
   cy.getCookie('auth_tkt').should('not.exist')
   cy.get('#cy-account-management').click()
@@ -27,7 +28,7 @@ Cypress.Commands.add('login', (username = Cypress.env('MAGPIE_ADMIN_USERNAME'), 
 })
 
 Cypress.Commands.add('logout', () => {
-  cy.route('/magpie/signout').as('logout')
+  cy.route(`${MAGPIE_PATH}/signout`).as('logout')
   cy.getCookie('auth_tkt').should('exist')
   cy.get('#cy-account-management').click()
   cy.get('#cy-logout-btn').click()
