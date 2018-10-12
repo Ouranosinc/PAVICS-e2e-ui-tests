@@ -30,6 +30,7 @@ describe('Build a workspace and feature layer hierarchy from json data', () => {
 
   it("Doesn't have workspaces anymore", () => {
     cy.get('.cy-layerswitcher-workspace').should('to.have.lengthOf', 0);
+    cy.toggleLayerSwitcherWidget()
   });
 
 });
