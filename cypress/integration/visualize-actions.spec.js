@@ -97,10 +97,6 @@ describe('Test project datasets actions (Visualize/Remove/Download)', () => {
     
   })
 
-  it('TODO: Select Regions shapefile should load polygons', () => {
-    
-  })
-
   it('TODO: Selecting a region polygon should hightlight it', () => {
     
   })
