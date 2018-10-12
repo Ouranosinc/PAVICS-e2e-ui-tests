@@ -48,14 +48,14 @@ Cypress.Commands.add('hasOpenLayersSelectedRegion', (map, count) => {
   });
 })
 
-Cypress.Commands.add('selectFirstShapeFile', (key) => {
+Cypress.Commands.add('selectFirstFeatureLayer', (key) => {
   cy.get('#cy-layerswitcher-regions-tab').click()
-  cy.get(`.cy-layerswitcher-shapefile-item`).first().click()
+  cy.get(`.cy-layerswitcher-feature-layer-item`).first().click()
 })
 
-Cypress.Commands.add('selectShapeFileByKey', (key) => {
+Cypress.Commands.add('selectFeatureLayerByKey', (key) => {
   cy.get('#cy-layerswitcher-regions-tab').click()
-  cy.get(`.cy-layerswitcher-shapefile-item#cy-shapefile-name-${key}`).click()
+  cy.get(`.cy-layerswitcher-feature-layer-item#cy-feature-layer-name-${key}`).click()
 })
 
 Cypress.Commands.add('selectRegionByCoordinates', (x, y) => {

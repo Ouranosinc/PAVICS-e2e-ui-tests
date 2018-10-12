@@ -6,7 +6,7 @@ import {
 	MISSING_PROVIDER_WORKFLOW,
 	SCIENTIFIC_WORKFLOWS_LABEL,
 	SEARCH_DATASETS_TITLE,
-	SHAPEFILE_NAME_NESTATES,
+	FEATURE_LAYER_NAME_NESTATES,
 	WORKFLOW_INPUT_FEATUREIDS,
 	WORKFLOW_INPUT_RESOURCE,
 	WORKFLOW_INPUT_TYPENAME
@@ -126,7 +126,7 @@ describe('Test workflow configuration and execution', () => {
 		cy.window().then((window) => {
 			cy.hasOpenLayersLoadedRegions(window.cyCurrentMap, false)
 		})
-		cy.selectShapeFileByKey(SHAPEFILE_NAME_NESTATES)
+		cy.selectFeatureLayerByKey(FEATURE_LAYER_NAME_NESTATES)
 
 		cy.window().then((window) => {
 			cy.hasOpenLayersLoadedRegions(window.cyCurrentMap, true)

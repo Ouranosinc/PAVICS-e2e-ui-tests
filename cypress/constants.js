@@ -41,7 +41,7 @@ export const IDENTIFIER_THREDDS_OPENDAP_URLS = "thredds_opendap_urls";
 export const LAYER_SELECTED_REGIONS_NAME = 'LAYER_SELECTED_REGIONS';
 export const LAYER_REGIONS_NAME = 'LAYER_REGIONS';
 export const LAYER_DATASET_NAME = 'LAYER_DATASET';
-export const SHAPEFILE_NAME_NESTATES = 'NE_State_and_Province_Boundaries';
+export const FEATURE_LAYER_NAME_NESTATES = 'NE_State_and_Province_Boundaries';
 export const SUBSETTING_TASK_NAME = 'SUBSETTING_TASK_NAME';
 export const PARSE_CATALOG_TASK_NAME = 'DOWNLOAD_TASK_NAME';
 
